@@ -15,10 +15,10 @@ Future<Graph> calculateGraph(String geoJson) async {
 // }
 
 void calculateRoute() async {
-  Graph graph = await calculateGraph('assets/runs.geojson');
+  Graph graph = await calculateGraph('assets/filtered_lifts.geojson');
 
-  final startNode = graph.nodes.values.first;
-  final endNode = graph.nodes.values.elementAt(20);
+  final startNode = graph.nodes.values.elementAt(200);
+  final endNode = graph.nodes.values.elementAt(555);
 
   final shortestPath = Dijkstra.findShortestPath(graph, startNode, endNode);
 
