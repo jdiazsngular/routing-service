@@ -1,6 +1,7 @@
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/service/file_service.dart';
 import 'package:routing_service/service/graph_service.dart';
+import 'package:routing_service/service/route_algorithm_service.dart';
 
 Future<Graph> calculateGraph(String geoJson) async {
   String jsonString = await FileService.loadFile(geoJson);
@@ -14,7 +15,15 @@ Future<Graph> calculateGraph(String geoJson) async {
 // }
 
 void calculateRoute() async {
-  Graph graph = await calculateGraph('assets/test.geojson');
+  Graph graph = await calculateGraph('assets/runs.geojson');
 
-  print(graph);
+  final startNode = graph.nodes.values.first;
+  final endNode = graph.nodes.values.elementAt(20);
+
+  final shortestPath = Dijkstra.findShortestPath(graph, startNode, endNode);
+
+  print('Shortest Path:');
+  for (var node in shortestPath) {
+    print('(${node.latitude}, ${node.longitude}, ${node.altitude})');
+  }
 }
