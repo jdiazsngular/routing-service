@@ -1,0 +1,58 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [0.0, 0.0, 10],
+                    [0.0, 1.0, 10]
+                ]
+            },
+            "properties": {
+                "name": "Run 1"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [0.0, 1.0, 10],
+                    [1.0, 1.0, 20],
+                    [1.1, 1.1, 21]
+                ]
+            },
+            "properties": {
+                "name": "Run 2"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [1.0, 1.0, 20],
+                    [1.0, 0.0, 20]
+                ]
+            },
+            "properties": {
+                "name": "Run 3"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [1.0, 1.0, 20],
+                    [1.2, 0.2, 22]
+                ]
+            },
+            "properties": {
+                "name": "Run 4"
+            }
+        }
+    ]
+}
