@@ -29,16 +29,11 @@ class GraphService {
           final endCoord = coordinates[i + 1];
 
           // Agregar nodos al grafo y convertir las coordenadas a double
-          final startNode = graph.addNode(
-            startCoord[1].toDouble(),
-            startCoord[0].toDouble(),
-            startCoord[2].toDouble(),
-          );
-          final endNode = graph.addNode(
-            endCoord[1].toDouble(),
-            endCoord[0].toDouble(),
-            endCoord[2].toDouble(),
-          );
+          final startNode = graph.addNode(startCoord[1].toDouble(),
+              startCoord[0].toDouble(), _getOptionalRange(startCoord, 2));
+
+          final endNode = graph.addNode(endCoord[1].toDouble(),
+              endCoord[0].toDouble(), _getOptionalRange(endCoord, 2));
 
           // Calcular la distancia entre los nodos
           final distance =
@@ -58,8 +53,8 @@ class GraphService {
       for (var j = i + 1; j < nodeKeys.length; j++) {
         final node2 = graph.nodes[nodeKeys[j]]!;
         if (node1.latitude == node2.latitude &&
-            node1.longitude == node2.longitude &&
-            node1.altitude == node2.altitude) {
+            node1.longitude == node2.longitude) {
+          //node1.altitude == node2.altitude) {
           final distance = MathUtil.calculateDistanceByHaversine(node1, node2);
 
           graph.addNeighbor(node1, node2, distance);
@@ -69,5 +64,12 @@ class GraphService {
     }
 
     return graph;
+  }
+
+  static double? _getOptionalRange(List<dynamic> coord, int position) {
+    if (coord.length > position) {
+      return coord[2].toDouble();
+    }
+    return null;
   }
 }

@@ -1,8 +1,9 @@
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 
-class Dijkstra {
-  // Encuentra la ruta más corta desde un nodo origen a un nodo destino
+// Dijkstra Algorithm -- Encuentra la ruta más corta desde un nodo origen a un nodo destino
+
+class RouteAlgorithmService {
   static List<Node> findShortestPath(Graph graph, Node start, Node end) {
     final distances = <Node, double>{};
     final previousNodes = <Node, Node?>{};
@@ -41,7 +42,6 @@ class Dijkstra {
     return _constructPath(previousNodes, end);
   }
 
-  // Reconstruye la ruta desde el nodo origen al nodo destino
   static List<Node> _constructPath(Map<Node, Node?> previousNodes, Node end) {
     final path = <Node>[];
     Node? currentNode = end;
