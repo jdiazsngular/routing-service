@@ -8,10 +8,11 @@ class Graph {
     return '$lat,$long,${alt ?? ''}';
   }
 
-  Node addNode(double lat, double long, [double? alt]) {
+  Node addNode(double lat, double long, double? alt, bool isLift) {
     final key = _getNodeKey(lat, long, alt);
     if (!nodes.containsKey(key)) {
-      nodes[key] = Node(latitude: lat, longitude: long, altitude: alt);
+      nodes[key] =
+          Node(latitude: lat, longitude: long, altitude: alt, isLift: isLift);
     }
     return nodes[key]!;
   }
