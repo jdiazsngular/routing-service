@@ -1,45 +1,33 @@
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 
-// Dijkstra Algorithm -- Encuentra la ruta más corta desde un nodo origen a un nodo destino
+/// Dijkstra Algorithm: Encuentra la ruta más corta desde un nodo origen a un nodo destino
 class RouteAlgorithmService {
-  static List<Node> findShortestPath(Graph graph, Node start, Node end) {
+  static List<Node> findShortestPath(Graph graph, Node startNode, Node endNode) {
     final distances = <Node, double>{};
-    final previousNodes = <Node, Node?>{};
-
-    // Cola de prioridad para procesar los nodos en orden de distancia más corta
+    final path = <Node, Node?>{};
     final priorityQueue =
         PriorityQueue<Node>((a, b) => distances[a]!.compareTo(distances[b]!));
 
-    // Inicializa las distancias a infinito y los nodos previos a null
-    for (var node in graph.nodes.values) {
-      distances[node] = double.infinity;
-      previousNodes[node] = null;
-    }
+    _initializeDistancesAndPath(graph, distances, path);
 
-    // La distancia al nodo de inicio es 0
-    distances[start] = 0.0;
-    priorityQueue.add(start);
+    distances[startNode] = 0.0;
+    priorityQueue.add(startNode);
 
-    // Procesa la cola de prioridad hasta que esté vacía
     while (!priorityQueue.isEmpty) {
       final currentNode = priorityQueue.removeFirst();
 
-      // Si el nodo actual es el nodo de destino, termina el bucle
-      if (currentNode == end) {
+      if (currentNode == endNode) {
         break;
       }
 
-      // Actualiza las distancias a los nodos vecinos
       for (var neighbor in currentNode.neighbors) {
         final distance = distances[currentNode]! + neighbor.distance;
 
-        // Si se encuentra una distancia más corta, se actualiza
         if (distance < distances[neighbor.node]!) {
           distances[neighbor.node] = distance;
-          previousNodes[neighbor.node] = currentNode;
+          path[neighbor.node] = currentNode;
 
-          // Si el nodo vecino no está en la cola de prioridad, se agrega
           if (!priorityQueue.contains(neighbor.node)) {
             priorityQueue.add(neighbor.node);
           }
@@ -47,24 +35,29 @@ class RouteAlgorithmService {
       }
     }
 
-    // retorna el camino más corto desde el nodo de inicio al de destino
-    return _constructPath(previousNodes, end);
+    return _constructRoute(path, endNode);
   }
 
-  static List<Node> _constructPath(Map<Node, Node?> previousNodes, Node end) {
-    final path = <Node>[];
-    Node? currentNode = end;
+  static void _initializeDistancesAndPath(Graph graph, Map<Node, double> distances, Map<Node, Node?> path) {
+    for (var node in graph.nodes.values) {
+      distances[node] = double.infinity;
+      path[node] = null;
+    }
+  }
+
+  static List<Node> _constructRoute(Map<Node, Node?> path, Node endNode) {
+    final route = <Node>[];
+    Node? currentNode = endNode;
 
     while (currentNode != null) {
-      path.add(currentNode);
-      currentNode = previousNodes[currentNode];
+      route.add(currentNode);
+      currentNode = path[currentNode];
     }
 
-    return path.reversed.toList();
+    return route.reversed.toList();
   }
 }
 
-// Clase PriorityQueue para manejar la cola de prioridad en el algoritmo de Dijkstra
 class PriorityQueue<E> {
   final _list = <E>[];
   final int Function(E, E) _comparator;
