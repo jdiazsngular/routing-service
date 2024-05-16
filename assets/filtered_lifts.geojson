@@ -34069,13 +34069,11 @@
           ],
           [
             0.5440106843113313,
-            42.56636625076578,
-            1989.67
+            42.56636625076578
           ],
           [
             0.5441365219758438,
-            42.566238692823305,
-            1989.67
+            42.566238692823305
           ],
           [
             0.5442866999999998,
@@ -34101,8 +34099,7 @@
           ],
           [
             0.5444040652852777,
-            42.56598898818223,
-            1993.125
+            42.56598898818223
           ],
           [
             0.5444268,
@@ -34150,8 +34147,7 @@
           ],
           [
             0.5446166840341107,
-            42.565758159085874,
-            1998.5
+            42.565758159085874
           ],
           [
             0.5446945000000002,
@@ -34309,8 +34305,7 @@
           ],
           [
             0.5525664086878805,
-            42.56183127990218,
-            2315
+            42.56183127990218
           ],
           [
             0.5525160999999996,
@@ -34336,8 +34331,7 @@
           ],
           [
             0.5525642272285722,
-            42.561916440898045,
-            2314
+            42.561916440898045
           ],
           [
             0.5525302999999998,
@@ -34409,6 +34403,242 @@
             0.5528655,
             42.5547531,
             2251.13
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Gallinero, Telecadira Gallinero",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5585953,
+            42.554222499999995,
+            2143.5
+          ],
+          [
+            0.5585287192053556,
+            42.55427794102593
+          ],
+          [
+            0.5582962774784619,
+            42.55425390941738
+          ],
+          [
+            0.5581724,
+            42.5541938,
+            2147.29
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Gallinero, Telecadira Gallinero",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5585953,
+            42.554222499999995,
+            2143.5
+          ],
+          [
+            0.5585287192053556,
+            42.55427794102593
+          ],
+          [
+            0.5582962774784619,
+            42.55425390941738
+          ],
+          [
+            0.5581724,
+            42.5541938,
+            2147.29
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Gallinero, Telecadira Gallinero",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5559494000000003,
+            42.54413330000001,
+            2604.3500000000004
+          ],
+          [
+            0.5559054000000002,
+            42.5440084,
+            2606.13
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Gallinero, Telecadira Gallinero",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5683481,
+            42.5593299,
+            1912.5
+          ],
+          [
+            0.5683855,
+            42.5597638,
+            1908.33
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Basibé, Telecadira Baciver",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5691317,
+            42.559264299999995,
+            1906.1799999999998
+          ],
+          [
+            0.5696899000000002,
+            42.559201499999986,
+            1907.76
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Rincón del Cielo, Telecadira Racó del Cel",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5416880000000002,
+            42.5734104,
+            1818.54
+          ],
+          [
+            0.5415044,
+            42.573172800000016,
+            1825.76
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla El Molino, Telecadira El Molí",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5400737,
+            42.586867299999994,
+            1506.83
+          ],
+          [
+            0.5402348,
+            42.5869819,
+            1507.79
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telesilla Robellons, Telecadira Rovellons",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5451826999999998,
+            42.574289199999996,
+            1868.47
+          ],
+          [
+            0.5451147,
+            42.5741891,
+            1870.47
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Puentet",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5458662999999998,
+            42.57401020000001,
+            1866
+          ],
+          [
+            0.5461312,
+            42.5740005,
+            1864.1499999999999
+          ]
+        ],
+        "type": "LineString"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Puentet",
+        "type": "connection"
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            0.5454211,
+            42.57232050000001,
+            1892.35
+          ],
+          [
+            0.5452249,
+            42.5723811,
+            1889.35
           ]
         ],
         "type": "LineString"
