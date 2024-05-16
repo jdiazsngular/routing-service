@@ -8,52 +8,47 @@ class GraphService {
   static Graph geoJsonToGraph(String geoJsonString) {
     final graph = Graph();
 
-    // Decodificar el string geoJson a un mapa
     final Map<String, dynamic> geoJson = jsonDecode(geoJsonString);
     final features = geoJson['features'] as List<dynamic>;
 
-    // Iterar sobre cada feature en el geoJson
     for (var feature in features) {
-      final geometry = feature['geometry'];
-      final properties = feature['properties'];
-
-      // Verificar si la feature es un telesilla
-      PisteType pisteType = GeoJsonUtils.mapGeoJsonToPisteType(properties['type']);
-
-      // Verificar si el tipo de geometría es LineString
-      if (geometry['type'] == 'LineString') {
-        final coordinates = geometry['coordinates'] as List<dynamic>;
-
-        // Iterar sobre las coordenadas y crear nodos y vecinos
-        for (var i = 0; i < coordinates.length - 1; i++) {
-          final currentCoord = coordinates[i];
-          final nextCoord = coordinates[i + 1];
-
-          // Agregar nodos al grafo y convertir las coordenadas a double
-          final currentNode = graph.addNode(
-            currentCoord[1].toDouble(),
-            currentCoord[0].toDouble(),
-            _getOptionalRange(currentCoord, 2),
-            pisteType);
-
-          final nextNode = graph.addNode(
-            nextCoord[1].toDouble(),
-            nextCoord[0].toDouble(), 
-            _getOptionalRange(nextCoord, 2),
-            pisteType);
-
-          // Calcular la distancia entre los nodos
-          final distance =
-              MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
-
-          // Agregar vecinos a los nodos
-          graph.addNeighbor(currentNode, nextNode, distance);
-          graph.addNeighbor(nextNode, currentNode, distance);
-        }
-      }
+      buildNodesAndNeighbor(feature, graph);
     }
 
     return graph;
+  }
+
+  static void buildNodesAndNeighbor(dynamic feature, Graph graph) {
+    final geometry = feature['geometry'];
+    final properties = feature['properties'];
+    
+    if (geometry['type'] != 'LineString') return;
+    
+    final coordinates = geometry['coordinates'] as List<dynamic>; 
+    PisteType pisteType = GeoJsonUtils.mapGeoJsonToPisteType(properties['type']);
+
+    for (var i = 0; i < coordinates.length - 1; i++) {
+      final currentCoord = coordinates[i];
+      final nextCoord = coordinates[i + 1];
+    
+      final Node currentNode = createNode(graph, currentCoord, pisteType);
+      final Node nextNode = createNode(graph, nextCoord, pisteType);
+    
+      final distance =
+          MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
+    
+      graph.addNeighbor(currentNode, nextNode, distance);
+      graph.addNeighbor(nextNode, currentNode, distance);
+    }
+  }
+
+  static Node createNode(Graph graph, currentCoord, PisteType pisteType) {
+     final currentNode = graph.addNode(
+      currentCoord[1].toDouble(),
+      currentCoord[0].toDouble(),
+      _getOptionalRange(currentCoord, 2),
+      pisteType);
+    return currentNode;
   }
 
   static double? _getOptionalRange(List<dynamic> coord, int position) {
