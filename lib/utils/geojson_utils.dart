@@ -14,7 +14,12 @@ class GeoJsonUtils {
         {
           "type": "Feature",
           "geometry": {"type": "LineString", "coordinates": coordinates},
-          "properties": {}
+          "properties": {
+            "name": "route",
+            "stroke": "#0084ff",
+            "stroke-width": 5,
+            "stroke-opacity": 1
+          }
         }
       ]
     };
