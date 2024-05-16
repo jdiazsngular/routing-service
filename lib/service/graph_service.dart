@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:routing_service/model/graph.dart';
+import 'package:routing_service/model/node.dart';
+import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
 class GraphService {
@@ -16,8 +18,7 @@ class GraphService {
       final properties = feature['properties'];
 
       // Verificar si la feature es un telesilla
-      bool isLift = properties['type'] != null &&
-          properties['type'].toString().startsWith('lift');
+      PisteType pisteType = GeoJsonUtils.mapGeoJsonToPisteType(properties['type']);
 
       // Verificar si el tipo de geometría es LineString
       if (geometry['type'] == 'LineString') {
@@ -25,43 +26,29 @@ class GraphService {
 
         // Iterar sobre las coordenadas y crear nodos y vecinos
         for (var i = 0; i < coordinates.length - 1; i++) {
-          final startCoord = coordinates[i];
-          final endCoord = coordinates[i + 1];
+          final currentCoord = coordinates[i];
+          final nextCoord = coordinates[i + 1];
 
           // Agregar nodos al grafo y convertir las coordenadas a double
-          final startNode = graph.addNode(
-              startCoord[1].toDouble(),
-              startCoord[0].toDouble(),
-              _getOptionalRange(startCoord, 2),
-              isLift);
+          final currentNode = graph.addNode(
+            currentCoord[1].toDouble(),
+            currentCoord[0].toDouble(),
+            _getOptionalRange(currentCoord, 2),
+            pisteType);
 
-          final endNode = graph.addNode(endCoord[1].toDouble(),
-              endCoord[0].toDouble(), _getOptionalRange(endCoord, 2), isLift);
+          final nextNode = graph.addNode(
+            nextCoord[1].toDouble(),
+            nextCoord[0].toDouble(), 
+            _getOptionalRange(nextCoord, 2),
+            pisteType);
 
           // Calcular la distancia entre los nodos
           final distance =
-              MathUtil.calculateDistanceByHaversine(startNode, endNode);
+              MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
 
           // Agregar vecinos a los nodos
-          graph.addNeighbor(startNode, endNode, distance);
-          graph.addNeighbor(endNode, startNode, distance);
-        }
-      }
-    }
-
-    // Conectar nodos entre LineStrings por coordenadas (lat, long, alt)
-    // Agregar nodos vecinos bidireccionalmente
-    final nodeKeys = graph.nodes.keys.toList();
-    for (var i = 0; i < nodeKeys.length; i++) {
-      final node1 = graph.nodes[nodeKeys[i]]!;
-      for (var j = i + 1; j < nodeKeys.length; j++) {
-        final node2 = graph.nodes[nodeKeys[j]]!;
-        if (node1.latitude == node2.latitude &&
-            node1.longitude == node2.longitude) {
-          final distance = MathUtil.calculateDistanceByHaversine(node1, node2);
-
-          graph.addNeighbor(node1, node2, distance);
-          graph.addNeighbor(node2, node1, distance);
+          graph.addNeighbor(currentNode, nextNode, distance);
+          graph.addNeighbor(nextNode, currentNode, distance);
         }
       }
     }
