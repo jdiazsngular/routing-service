@@ -36,9 +36,12 @@ class GraphService {
     
       final distance =
           MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
+
+      final currentToNextCost = distance + MathUtil.calculateFactorFor(currentNode, nextNode);
+      final nextToCurrentCost = distance + MathUtil.calculateFactorFor(nextNode, currentNode);
     
-      graph.addNeighbor(currentNode, nextNode, distance);
-      graph.addNeighbor(nextNode, currentNode, distance);
+      graph.addNeighbor(currentNode, nextNode, currentToNextCost);
+      graph.addNeighbor(nextNode, currentNode, nextToCurrentCost);
     }
   }
 

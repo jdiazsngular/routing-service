@@ -5,15 +5,25 @@ import 'package:routing_service/model/node.dart';
 class MathUtil {
   static const double _earthRadius = 6378.137;
 
-  /*static double calculateDistanceByEuclidiana(Node fromNode, Node toNode) {
-    return sqrt(pow(toNode.latitude - fromNode.latitude, 2) +
-        pow(toNode.longitude - fromNode.longitude, 2) +
-        pow(toNode.altitude - fromNode.altitude, 2));
-  }*/
-
   static double calculateDistanceByHaversine(Node fromNode, Node toNode) {
     return calculateDistanceByHaversineWithCoordinates(fromNode.latitude,
         fromNode.longitude, toNode.latitude, toNode.longitude);
+  }
+
+  static double calculateFactorFor(Node fromNode, Node toNode) {
+    double factor = 0.0;
+    if (fromNode.altitude == null || toNode.altitude == null) return factor;
+
+    double unevenness = toNode.altitude! - fromNode.altitude!;
+    if (fromNode.pisteType == PisteType.lift) {
+      factor = min(0, unevenness).toDouble().abs();
+    }
+
+    if (fromNode.pisteType == PisteType.run) {
+      factor = max(0, unevenness) * 2;
+    }
+
+    return factor;
   }
 
   static double calculateDistanceByHaversineWithCoordinates(
