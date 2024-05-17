@@ -10,22 +10,6 @@ class MathUtil {
         fromNode.longitude, toNode.latitude, toNode.longitude);
   }
 
-  static double calculateFactorFor(Node fromNode, Node toNode) {
-    double factor = 0.0;
-    if (fromNode.altitude == null || toNode.altitude == null) return factor;
-
-    double unevenness = toNode.altitude! - fromNode.altitude!;
-    if (fromNode.pisteType == PisteType.lift) {
-      factor = min(0, unevenness).toDouble().abs();
-    }
-
-    if (fromNode.pisteType == PisteType.run) {
-      factor = max(0, unevenness) * 2;
-    }
-
-    return factor;
-  }
-
   static double calculateDistanceByHaversineWithCoordinates(
     double fromLat,
     double fromLong,
@@ -41,5 +25,21 @@ class MathUtil {
             sin(dLon / 2);
     var c = 2 * atan2(sqrt(a), sqrt(1 - a));
     return _earthRadius * c * 1000;
+  }
+
+  static double calculateFactorFor(Node fromNode, Node toNode) {
+    double factor = 0.0;
+    if (fromNode.altitude == null || toNode.altitude == null) return factor;
+
+    double unevenness = toNode.altitude! - fromNode.altitude!;
+    if (fromNode.pisteType == PisteType.lift) {
+      factor = min(0, unevenness).toDouble().abs();
+    }
+
+    if (fromNode.pisteType == PisteType.run) {
+      factor = max(0, unevenness) * 2;
+    }
+
+    return factor;
   }
 }
