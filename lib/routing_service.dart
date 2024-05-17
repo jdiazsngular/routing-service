@@ -11,18 +11,23 @@ Future<Graph> calculateGraph(String geoJson) async {
 }
 
 void calculateRoute() async {
-  Graph graph = await calculateGraph('assets/filtered_lifts.geojson');
+  Stopwatch stopwatch = Stopwatch();
 
+  stopwatch.start();
+  Graph graph = await calculateGraph('assets/filtered_lifts.geojson');
+  stopwatch.stop();
+  print('Calculate graph time: ${stopwatch.elapsedMilliseconds} ms');
+  
+  stopwatch.reset();
+  stopwatch.start();
   Node startNode = graph.findClosestNode(42.586867299999994, 0.5400737, 1506.83);
   Node endNode = graph.findClosestNode(42.5441, 0.5556, 2147.29);
 
   final shortestPath =
       RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
-  print('Shortest Path:');
-  for (var node in shortestPath) {
-    print('(${node.latitude}, ${node.longitude}, ${node.altitude})');
-  }
-
+  stopwatch.stop();
+  print('Calculate route time: ${stopwatch.elapsedMilliseconds} ms');
+  
   final geoJson = GeoJsonUtils.pathToGeoJson(shortestPath);
   print('GeoJSON:');
   print(geoJson);
