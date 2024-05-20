@@ -37,7 +37,7 @@ El algoritmo termina cuando el nodo de destino ha sido marcado como visitado (al
 ### Ejemplo
 
 #### Paso 1: Inicialización
-![Paso 1: Inicialización](https://github.com/jdiazsngular/routing-service/blob/develop/assets/images/dijkstra_step_with_distances_1.png)
+[Paso 1: Inicialización](https://github.com/jdiazsngular/routing-service/blob/develop/assets/images/dijkstra_step_with_distances_1.png)
 
 #### Paso 2: Visitar el Nodo A
 ![Paso 2: Visitar el Nodo A](assets/images/dijkstra_step_with_distances_2.png)
