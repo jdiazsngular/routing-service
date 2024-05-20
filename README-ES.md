@@ -55,7 +55,7 @@ El algoritmo termina cuando el nodo de destino ha sido marcado como visitado (al
 ![Paso 6: Visitar el Nodo E](assets/images/dijkstra_step_6.png)
 
 ### Paso 6: Visitar el Nodo E
-![Paso 6: Visitar el Nodo E](assets/images/dijkstra_algorithm.gif)
+![Paso 6: Visitar el Nodo E](assets/images/dijkstra_algorithms.gif)
 
 El camino más corto desde A hasta E es A -> B -> C -> D -> E con una distancia total de 7.
 
