@@ -35,25 +35,25 @@ Here is a visual representation of Dijkstra's algorithm finding the shortest pat
 ** Example **
 
 ### Paso 1: Inicialización
-![Paso 1: Inicialización](assets/images/dijkstra_step_with_distances_1.png)
+![Paso 1: Inicialización](assets/images/dijkstra_step_1.png)
 
 ### Paso 2: Visitar el Nodo A
-![Paso 2: Visitar el Nodo A](assets/images/dijkstra_step_with_distances_2.png)
+![Paso 2: Visitar el Nodo A](assets/images/dijkstra_step_2.png)
 
 ### Paso 3: Visitar el Nodo B
-![Paso 3: Visitar el Nodo B](assets/images/dijkstra_step_with_distances_3.png)
+![Paso 3: Visitar el Nodo B](assets/images/dijkstra_step_3.png)
 
 ### Paso 4: Visitar el Nodo C
-![Paso 4: Visitar el Nodo C](assets/images/dijkstra_step_with_distances_4.png)
+![Paso 4: Visitar el Nodo C](assets/images/dijkstra_step_4.png)
 
 ### Paso 5: Visitar el Nodo D
-![Paso 5: Visitar el Nodo D](assets/images/dijkstra_step_with_distances_5.png)
+![Paso 5: Visitar el Nodo D](assets/images/dijkstra_step_5.png)
 
 ### Paso 6: Visitar el Nodo E
-![Paso 6: Visitar el Nodo E](assets/images/dijkstra_step_with_distances_6.png)
+![Paso 6: Visitar el Nodo E](assets/images/dijkstra_step_6.png)
 
 ### Paso 6: Visitar el Nodo E
-![Paso 6: Visitar el Nodo E](assets/images/dijkstra_algorithm_with_distances.gif)
+![Paso 6: Visitar el Nodo E](assets/images/dijkstra_algorithm.gif)
 
 El camino más corto desde A hasta E es A -> B -> C -> D -> E con una distancia total de 7.
 
