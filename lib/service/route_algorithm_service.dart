@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 
 /// Dijkstra Algorithm: Encuentra la ruta más corta desde un nodo origen a un nodo destino
 class RouteAlgorithmService {
-  static List<Node> findShortestPath(Graph graph, Node startNode, Node endNode) {
+  static List<Node> findShortestPath(
+      Graph graph, Node startNode, Node endNode) {
     final distances = <Node, double>{};
     final path = <Node, Node?>{};
     final priorityQueue =
@@ -14,7 +16,7 @@ class RouteAlgorithmService {
     distances[startNode] = 0.0;
     priorityQueue.add(startNode);
 
-    while (!priorityQueue.isEmpty) {
+    while (priorityQueue.isNotEmpty) {
       final currentNode = priorityQueue.removeFirst();
 
       if (currentNode == endNode) {
@@ -38,7 +40,8 @@ class RouteAlgorithmService {
     return _constructRoute(path, endNode);
   }
 
-  static void _initializeDistancesAndPath(Graph graph, Map<Node, double> distances, Map<Node, Node?> path) {
+  static void _initializeDistancesAndPath(
+      Graph graph, Map<Node, double> distances, Map<Node, Node?> path) {
     for (var node in graph.nodes.values) {
       distances[node] = double.infinity;
       path[node] = null;
@@ -56,26 +59,4 @@ class RouteAlgorithmService {
 
     return route.reversed.toList();
   }
-}
-
-class PriorityQueue<E> {
-  final _list = <E>[];
-  final int Function(E, E) _comparator;
-
-  PriorityQueue(this._comparator);
-
-  void add(E element) {
-    _list.add(element);
-    _list.sort(_comparator);
-  }
-
-  E removeFirst() {
-    return _list.removeAt(0);
-  }
-
-  bool contains(E element) {
-    return _list.contains(element);
-  }
-
-  bool get isEmpty => _list.isEmpty;
 }
