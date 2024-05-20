@@ -34,7 +34,7 @@ Terminar:
 
 El algoritmo termina cuando el nodo de destino ha sido marcado como visitado (al planear una ruta entre dos nodos específicos) o cuando la menor distancia entre los nodos no visitados es infinito (al planear un recorrido completo; ocurre cuando no hay conexión entre los nodos no visitados restantes).
 
-** Ejemplo **
+### Ejemplo
 
 ### Paso 1: Inicialización
 ![Paso 1: Inicialización](assets/images/dijkstra_step_1.png)
