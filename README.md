@@ -1,38 +1,34 @@
-# Graph Routing Library
+# Librería de Enrutamiento de Grafos
 
-This Dart library provides functionalities for detecting the shortest path in a graph using Dijkstra's algorithm. The library is designed to handle complex routing problems, making it suitable for applications in transportation networks, geographical information systems, and other areas where pathfinding is crucial.
+Esta librería de Dart proporciona funcionalidades para detectar la ruta más corta en un grafo utilizando el algoritmo de Dijkstra. La librería está diseñada para manejar problemas de enrutamiento complejos, siendo adecuada para aplicaciones en redes de transporte, sistemas de información geográfica y otras áreas donde la búsqueda de rutas es crucial.
 
-## Features
+## Características
 
-- **Graph Representation:** Efficient graph representation using nodes and edges.
-- **Shortest Path Calculation:** Implementation of Dijkstra's algorithm to find the shortest path between nodes.
-- **File Handling:** Utilities to read graph data from files.
-- **Geospatial Utilities:** Functions to handle geospatial data.
-- **Routing Service:** High-level service to manage routing operations.
+- **Representación de Grafos:** Representación eficiente de grafos usando nodos y aristas.
+- **Cálculo de la Ruta Más Corta:** Implementación del algoritmo de Dijkstra para encontrar la ruta más corta entre nodos.
+- **Manejo de Archivos:** Utilidades para leer datos de grafos desde archivos.
+- **Utilidades Geoespaciales:** Funciones para manejar datos geoespaciales.
+- **Servicio de Enrutamiento:** Servicio de alto nivel para gestionar operaciones de enrutamiento.
 
-## Dijkstra's Algorithm
-Dijkstra's algorithm is a well-known algorithm for finding the shortest path between nodes in a graph, which may represent, for example, road networks. The algorithm works as follows:
+## Algoritmo de Dijkstra
+El algoritmo de Dijkstra es un algoritmo bien conocido para encontrar el camino más corto entre nodos en un grafo, que puede representar, por ejemplo, redes de carreteras. El algoritmo funciona de la siguiente manera:
 
-**Initialization:**
+**Inicialización:**
 
-Set the distance to the start node to zero and to all other nodes to infinity.
-Mark all nodes as unvisited. Set the initial node as current.
-Visit the Current Node:
+Establecer la distancia al nodo inicial en cero y a todos los demás nodos en infinito.
+Marcar todos los nodos como no visitados. Establecer el nodo inicial como el nodo actual.
+Visitar el Nodo Actual:
 
-For the current node, consider all of its unvisited neighbors and calculate their tentative distances through the current node.
-Compare the newly calculated tentative distance to the current assigned value and assign the smaller one.
-After considering all of the neighbors of the current node, mark the current node as visited. A visited node will not be checked again.
-Select the Next Current Node:
+Para el nodo actual, considerar todos sus vecinos no visitados y calcular sus distancias tentativas a través del nodo actual.
+Comparar la distancia recién calculada con el valor asignado actualmente y asignar el menor.
+Después de considerar todos los vecinos del nodo actual, marcar el nodo actual como visitado. Un nodo visitado no será revisado nuevamente.
+Seleccionar el Próximo Nodo Actual:
 
-Select the unvisited node with the smallest tentative distance and set it as the new "current node," then go back to step 2.
-If the smallest tentative distance among the unvisited nodes is infinity (when there is no connection between nodes), the algorithm stops.
-Terminate:
+Seleccionar el nodo no visitado con la menor distancia y establecerlo como el nuevo "nodo actual", luego regresar al paso 2.
+Si la menor distancia entre los nodos no visitados es infinito (cuando no hay conexión entre los nodos), el algoritmo se detiene.
+Terminar:
 
-The algorithm terminates when the destination node has been marked visited (when planning a route between two specific nodes) or when the smallest tentative distance among the unvisited nodes is infinity (when planning a complete traversal; occurs when there is no connection between remaining unvisited nodes).
-Example
-Here is a visual representation of Dijkstra's algorithm finding the shortest path in a graph
-
-** Example **
+El algoritmo termina cuando el nodo de destino ha sido marcado como visitado (al planear una ruta entre dos nodos específicos) o cuando la menor distancia entre los nodos no visitados es infinito (al planear un recorrido completo; ocurre cuando no hay conexión entre los nodos no visitados restantes).
 
 ### Ejemplo
 
@@ -54,14 +50,14 @@ Here is a visual representation of Dijkstra's algorithm finding the shortest pat
 ### Paso 6: Visitar el Nodo E
 ![Paso 6: Visitar el Nodo E](assets/images/dijkstra_step_6.png)
 
-### Paso 6: Visitar el Nodo E
-![Paso 6: Visitar el Nodo E](assets/images/dijkstra_algorithms.gif)
+### GIF
+![GIF](assets/images/dijkstra_algorithms.gif)
 
 El camino más corto desde A hasta E es A -> B -> C -> D -> E con una distancia total de 7.
 
-## Installation
+## Instalación
 
-Add this to your package's `pubspec.yaml` file:
+Añade esto a tu archivo `pubspec.yaml`:
 
 ```yaml
 dependencies:
@@ -69,4 +65,3 @@ dependencies:
     git:
       url: https://github.com/yourusername/graph_routing.git
       ref: main
-
