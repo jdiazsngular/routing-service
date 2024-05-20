@@ -1,7 +1,3 @@
-
-### README (Español)
-
-```markdown
 # Librería de Enrutamiento de Grafos
 
 Esta librería de Dart proporciona funcionalidades para detectar la ruta más corta en un grafo utilizando el algoritmo de Dijkstra. La librería está diseñada para manejar problemas de enrutamiento complejos, siendo adecuada para aplicaciones en redes de transporte, sistemas de información geográfica y otras áreas donde la búsqueda de rutas es crucial.
