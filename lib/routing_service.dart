@@ -10,7 +10,7 @@ Future<Graph> calculateGraph(String geoJson) async {
   return GraphService.geoJsonToGraph(jsonString);
 }
 
-void calculateRoute() async {
+void calculateRoute(List<double> startCoordinate, List<double> endCoordinate) async {
   Stopwatch stopwatch = Stopwatch();
 
   stopwatch.start();
@@ -20,8 +20,8 @@ void calculateRoute() async {
   
   stopwatch.reset();
   stopwatch.start();
-  Node startNode = graph.findClosestNode(42.586867299999994, 0.5400737, 1506.83);
-  Node endNode = graph.findClosestNode(42.5441, 0.5556, 2147.29);
+  Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
+  Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
   final shortestPath =
       RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
