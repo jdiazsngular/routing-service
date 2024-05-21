@@ -37,7 +37,7 @@ class MathUtil {
     }
 
     if (fromNode.pisteType == PisteType.run) {
-      factor = max(0, unevenness) * 2;
+      factor = max(0, unevenness) * 3;
     }
 
     return factor;
