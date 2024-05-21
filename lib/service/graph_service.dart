@@ -1,7 +1,8 @@
 import 'dart:convert';
+
+import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
-import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
 class GraphService {
@@ -25,15 +26,14 @@ class GraphService {
     if (geometry['type'] != 'LineString') return;
 
     final coordinates = geometry['coordinates'] as List<dynamic>;
-    PisteType pisteType =
-        GeoJsonUtils.mapGeoJsonToPisteType(properties['type']);
+    NodeType nodeType = NodeTypeMapper.map(properties['type']);
 
     for (var i = 0; i < coordinates.length - 1; i++) {
       final currentCoord = coordinates[i];
       final nextCoord = coordinates[i + 1];
 
-      final Node currentNode = _createNode(graph, currentCoord, pisteType);
-      final Node nextNode = _createNode(graph, nextCoord, pisteType);
+      final Node currentNode = _createNode(graph, currentCoord, nodeType);
+      final Node nextNode = _createNode(graph, nextCoord, nodeType);
 
       final distance =
           MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
@@ -48,12 +48,12 @@ class GraphService {
     }
   }
 
-  static Node _createNode(Graph graph, currentCoord, PisteType pisteType) {
+  static Node _createNode(Graph graph, currentCoord, NodeType nodeType) {
     final currentNode = graph.addNode(
         currentCoord[1].toDouble(),
         currentCoord[0].toDouble(),
         _getOptionalRange(currentCoord, 2),
-        pisteType);
+        nodeType);
     return currentNode;
   }
 

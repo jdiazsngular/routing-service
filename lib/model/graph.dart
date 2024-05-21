@@ -1,3 +1,4 @@
+import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
@@ -8,11 +9,11 @@ class Graph {
     return '$lat,$long,${alt ?? ''}';
   }
 
-  Node addNode(double lat, double long, double? alt, PisteType pisteType) {
+  Node addNode(double lat, double long, double? alt, NodeType nodeType) {
     final key = _getNodeKey(lat, long, alt);
     if (!nodes.containsKey(key)) {
-      nodes[key] =
-          Node(latitude: lat, longitude: long, altitude: alt, pisteType: pisteType);
+      nodes[key] = Node(
+          latitude: lat, longitude: long, altitude: alt, nodeType: nodeType);
     }
     return nodes[key]!;
   }

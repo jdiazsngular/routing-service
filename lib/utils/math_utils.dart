@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/model/node.dart';
 
 class MathUtil {
@@ -32,11 +33,11 @@ class MathUtil {
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
-    if (fromNode.pisteType == PisteType.lift) {
+    if (fromNode.nodeType == NodeType.lift) {
       factor = min(0, unevenness).toDouble().abs();
     }
 
-    if (fromNode.pisteType == PisteType.run) {
+    if (fromNode.nodeType == NodeType.run) {
       factor = max(0, unevenness) * 3;
     }
 

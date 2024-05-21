@@ -26,16 +26,4 @@ class GeoJsonUtils {
 
     return jsonEncode(geoJson);
   }
-
-  static PisteType mapGeoJsonToPisteType(String value) {
-    switch (value) {
-      case "lift":
-        return PisteType.lift;
-      case "connection":
-        return PisteType.connection;
-      default:
-        return PisteType.run;
-
-    }
-  }
 }
