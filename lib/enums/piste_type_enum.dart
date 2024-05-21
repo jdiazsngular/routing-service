@@ -1,4 +1,4 @@
-enum PisteType {
+enum RunType {
   novice,
   easy,
   intermediate,
@@ -10,24 +10,24 @@ enum PisteType {
 }
 
 class PisteTypeMapper {
-  static PisteType map(String value) {
+  static RunType map(String value) {
     switch (value.toLowerCase()) {
       case 'novice':
-        return PisteType.novice;
+        return RunType.novice;
       case 'easy':
-        return PisteType.easy;
+        return RunType.easy;
       case 'intermediate':
-        return PisteType.intermediate;
+        return RunType.intermediate;
       case 'advanced':
-        return PisteType.advanced;
+        return RunType.advanced;
       case 'expert':
-        return PisteType.expert;
+        return RunType.expert;
       case 'freeride':
-        return PisteType.freeride;
+        return RunType.freeride;
       case 'connection':
-        return PisteType.connection;
+        return RunType.connection;
       default:
-        return PisteType.unknown;
+        return RunType.unknown;
     }
   }
 }

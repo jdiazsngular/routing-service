@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:routing_service/enums/node_type_enum.dart';
+import 'package:routing_service/enums/piste_type_enum.dart';
 import 'package:routing_service/model/node.dart';
 
 class MathUtil {
@@ -28,7 +29,8 @@ class MathUtil {
     return _earthRadius * c * 1000;
   }
 
-  static double calculateFactorFor(Node fromNode, Node toNode) {
+  static double calculateFactorFor(
+      Node fromNode, Node toNode, RunType? runType, RunType userLevel) {
     double factor = 0.0;
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
@@ -39,6 +41,10 @@ class MathUtil {
 
     if (fromNode.nodeType == NodeType.run) {
       factor = max(0, unevenness) * 3;
+
+      if (runType!.index > userLevel.index) {
+        factor *= 10;
+      }
     }
 
     return factor;

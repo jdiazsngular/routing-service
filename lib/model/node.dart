@@ -1,4 +1,5 @@
 import 'package:routing_service/enums/node_type_enum.dart';
+import 'package:routing_service/enums/piste_type_enum.dart';
 import 'package:routing_service/model/neighbor.dart';
 
 class Node {
@@ -6,6 +7,7 @@ class Node {
   final double longitude;
   final double? altitude;
   final NodeType nodeType;
+  final RunType runType;
   final List<Neighbor> neighbors;
 
   Node({
@@ -13,6 +15,7 @@ class Node {
     required this.longitude,
     this.altitude,
     required this.nodeType,
+    required this.runType,
     List<Neighbor>? neighbors,
   }) : neighbors = neighbors ?? [];
 
