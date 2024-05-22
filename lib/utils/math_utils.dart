@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:routing_service/enums/node_type_enum.dart';
-import 'package:routing_service/enums/piste_type_enum.dart';
+import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/node.dart';
+import 'package:routing_service/model/user_option.dart';
 
 class MathUtil {
   static const double _earthRadius = 6378.137;
@@ -30,20 +31,26 @@ class MathUtil {
   }
 
   static double calculateFactorFor(
-      Node fromNode, Node toNode, RunType? runType, RunType userLevel) {
+      Node fromNode, Node toNode, RunType? runType, UserOption userOption) {
     double factor = 0.0;
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
-    if (fromNode.nodeType == NodeType.lift) {
-      factor = min(0, unevenness).toDouble().abs();
-    }
 
-    if (fromNode.nodeType == NodeType.run) {
-      factor = max(0, unevenness) * 3;
-
-      if (runType!.index > userLevel.index) {
-        factor *= 10;
+    if (unevenness > 0) {
+      if (fromNode.nodeType == NodeType.lift) {
+        factor = min(0, unevenness).toDouble().abs();
+      } else if (fromNode.nodeType == NodeType.run) {
+        factor = max(0, unevenness) * 3;
+      }
+    } else {
+      if (fromNode.nodeType == NodeType.run) {
+        factor = max(0, unevenness.abs()) * 3;
+        if (runType!.index > userOption.level.index) {
+          factor *= 1000;
+        }
+      } else if (fromNode.nodeType == NodeType.lift) {
+        factor = max(0, unevenness.abs()) * 0.1;
       }
     }
 

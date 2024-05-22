@@ -53,6 +53,13 @@ void main() {
             node.runType.index > userOption.level.index)
         .toList();
 
+    for (var node in nodes) {
+      print(
+          'Nodo: ${node.name} ${node.latitude} ${node.longitude} ${node.altitude}, RunType: ${node.runType}, Nivel de usuario: ${userOption.level}');
+    }
+
+    print("##########");
+
     for (var node in invalidRunNodes) {
       print(
           'Nodo inválido: ${node.name} ${node.latitude} ${node.longitude} ${node.altitude}, RunType: ${node.runType}, Nivel de usuario: ${userOption.level}');
