@@ -1,25 +1,23 @@
-import 'package:routing_service/enums/piste_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
+import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/service/file_service.dart';
 import 'package:routing_service/service/graph_service.dart';
 import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:routing_service/utils/geojson_utils.dart';
 
-Future<Graph> calculateGraph(String geoJson, RunType userLevel) async {
+Future<Graph> calculateGraph(String geoJson, UserOption userOption) async {
   String jsonString = await FileService.loadFile(geoJson);
-  return GraphService.geoJsonToGraph(jsonString, userLevel);
+  return GraphService.geoJsonToGraph(jsonString, userOption);
 }
 
-void calculateRoute(
-    List<double> startCoordinate, List<double> endCoordinate) async {
+void calculateRoute(UserOption userOption, List<double> startCoordinate,
+    List<double> endCoordinate) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
 
-  final userLevel = RunType.intermediate;
-
   Graph graph =
-      await calculateGraph('assets/filtered_lifts.geojson', userLevel);
+      await calculateGraph('assets/filtered_lifts.geojson', userOption);
 
   stopwatch.stop();
   print('Calculate graph time: ${stopwatch.elapsedMilliseconds} ms');
@@ -39,4 +37,17 @@ void calculateRoute(
   final geoJson = GeoJsonUtils.pathToGeoJson(shortestPath);
   print('GeoJSON:');
   print(geoJson);
+}
+
+Future<List<Node>> calculateRouteReturnNode(UserOption userOption,
+    List<double> startCoordinate, List<double> endCoordinate) async {
+  Graph graph =
+      await calculateGraph('assets/filtered_lifts.geojson', userOption);
+
+  Node startNode = graph.findClosestNode(
+      startCoordinate[0], startCoordinate[1], startCoordinate[2]);
+  Node endNode = graph.findClosestNode(
+      endCoordinate[0], endCoordinate[1], endCoordinate[2]);
+
+  return RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
 }

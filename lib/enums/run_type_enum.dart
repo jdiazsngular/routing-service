@@ -9,8 +9,11 @@ enum RunType {
   unknown,
 }
 
-class PisteTypeMapper {
-  static RunType map(String value) {
+class RunTypeMapper {
+  static RunType map(String? value) {
+    if (value == null) {
+      return RunType.unknown;
+    }
     switch (value.toLowerCase()) {
       case 'novice':
         return RunType.novice;

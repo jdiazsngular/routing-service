@@ -1,5 +1,5 @@
 import 'package:routing_service/enums/node_type_enum.dart';
-import 'package:routing_service/enums/piste_type_enum.dart';
+import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
@@ -10,11 +10,12 @@ class Graph {
     return '$lat,$long,${alt ?? ''}';
   }
 
-  Node addNode(double lat, double long, double? alt, NodeType nodeType,
-      RunType pisteType) {
+  Node addNode(String name, double lat, double long, double? alt,
+      NodeType nodeType, RunType pisteType) {
     final key = _getNodeKey(lat, long, alt);
     if (!nodes.containsKey(key)) {
       nodes[key] = Node(
+          name: name,
           latitude: lat,
           longitude: long,
           altitude: alt,
