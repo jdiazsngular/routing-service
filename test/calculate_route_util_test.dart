@@ -8,16 +8,13 @@ import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:test/test.dart';
 
 class CalculateRouteUtilTest {
-  static Future<void> testCalculateRoute(RunType userLevel) async {
+  static Future<void> testCalculateRoute(
+      RunType userLevel, List<double> startCoordinates, List<double> endCoordinates) async {
     UserOption userOption = UserOption(level: userLevel);
     bool exceptionThrown = false;
 
     try {
-      List<double> castanesaCoordinates = [42.5523, 0.6062, 2025.8];
-      List<double> molinoCoordinates = [42.586867299999994, 0.5400737, 1506.83];
-
-      List<Node> nodes =
-          await routing_service.calculateRouteReturnNode(userOption, castanesaCoordinates, molinoCoordinates);
+      List<Node> nodes = await routing_service.calculateRouteReturnNode(userOption, startCoordinates, endCoordinates);
 
       var invalidRunNodes = nodes
           .where((node) =>
