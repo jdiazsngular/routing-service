@@ -30,8 +30,7 @@ class MathUtil {
     return _earthRadius * c * 1000;
   }
 
-  static double calculateFactorFor(
-      Node fromNode, Node toNode, RunType? runType, UserOption userOption) {
+  static double calculateFactorForNew(Node fromNode, Node toNode, RunType? runType, UserOption userOption) {
     double factor = 0.0;
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
@@ -51,6 +50,26 @@ class MathUtil {
         }
       } else if (fromNode.nodeType == NodeType.lift) {
         factor = max(0, unevenness.abs()) * 0.1;
+      }
+    }
+
+    return factor;
+  }
+
+  static double calculateFactorFor(Node fromNode, Node toNode, UserOption userOption, RunType? runType) {
+    double factor = 0.0;
+    if (fromNode.altitude == null || toNode.altitude == null) return factor;
+
+    double unevenness = toNode.altitude! - fromNode.altitude!;
+    if (fromNode.nodeType == NodeType.lift) {
+      factor = min(0, unevenness).toDouble().abs();
+    }
+
+    if (fromNode.nodeType == NodeType.run) {
+      factor = max(0, unevenness) * 3;
+
+      if (runType!.index > userOption.level.index) {
+        factor = unevenness.abs() * 100;
       }
     }
 

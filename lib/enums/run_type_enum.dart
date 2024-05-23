@@ -1,12 +1,12 @@
 enum RunType {
+  unknown,
+  connection,
   novice,
   easy,
   intermediate,
   advanced,
   expert,
   freeride,
-  connection,
-  unknown,
 }
 
 class RunTypeMapper {
