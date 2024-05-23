@@ -21,8 +21,7 @@ class GraphService {
     return graph;
   }
 
-  static void _buildNodesAndNeighbor(
-      dynamic feature, Graph graph, UserOption userOption) {
+  static void _buildNodesAndNeighbor(dynamic feature, Graph graph, UserOption userOption) {
     final geometry = feature['geometry'];
     final properties = feature['properties'];
 
@@ -37,35 +36,24 @@ class GraphService {
       final currentCoord = coordinates[i];
       final nextCoord = coordinates[i + 1];
 
-      final Node currentNode =
-          _createNode(graph, name, currentCoord, nodeType, runType);
-      final Node nextNode =
-          _createNode(graph, name, nextCoord, nodeType, runType);
+      final Node currentNode = _createNode(graph, name, currentCoord, nodeType);
+      final Node nextNode = _createNode(graph, name, nextCoord, nodeType);
 
-      final distance =
-          MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
+      final distance = MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
 
-      final currentToNextCost = distance +
-          MathUtil.calculateFactorFor(
-              currentNode, nextNode, currentNode.runTypes, userOption);
-      final nextToCurrentCost = distance +
-          MathUtil.calculateFactorFor(
-              nextNode, currentNode, nextNode.runTypes, userOption);
+      final currentToNextCost =
+          distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption);
+      final nextToCurrentCost =
+          distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption);
 
-      graph.addNeighbor(currentNode, nextNode, currentToNextCost);
-      graph.addNeighbor(nextNode, currentNode, nextToCurrentCost);
+      graph.addNeighbor(currentNode, nextNode, currentToNextCost, runType, name);
+      graph.addNeighbor(nextNode, currentNode, nextToCurrentCost, runType, name);
     }
   }
 
-  static Node _createNode(Graph graph, String name, currentCoord,
-      NodeType nodeType, RunType runType) {
+  static Node _createNode(Graph graph, String name, currentCoord, NodeType nodeType) {
     final currentNode = graph.addNode(
-        currentCoord[1].toDouble(),
-        currentCoord[0].toDouble(),
-        _getOptionalRange(currentCoord, 2),
-        nodeType);
-    currentNode.addName(name);
-    currentNode.addRunType(runType);
+        currentCoord[1].toDouble(), currentCoord[0].toDouble(), _getOptionalRange(currentCoord, 2), nodeType);
     return currentNode;
   }
 

@@ -1,15 +1,14 @@
 import 'package:collection/collection.dart';
+import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 
 /// Dijkstra Algorithm: Encuentra la ruta más corta desde un nodo origen a un nodo destino
 class RouteAlgorithmService {
-  static List<Node> findShortestPath(
-      Graph graph, Node startNode, Node endNode) {
+  static List<Step> findShortestPath(Graph graph, Node startNode, Node endNode) {
     final distances = <Node, double>{};
-    final path = <Node, Node?>{};
-    final priorityQueue =
-        PriorityQueue<Node>((a, b) => distances[a]!.compareTo(distances[b]!));
+    final path = <Node, Step>{};
+    final priorityQueue = PriorityQueue<Node>((a, b) => distances[a]!.compareTo(distances[b]!));
 
     _initializeDistancesAndPath(graph, distances, path);
 
@@ -28,7 +27,7 @@ class RouteAlgorithmService {
 
         if (distance < distances[neighbor.node]!) {
           distances[neighbor.node] = distance;
-          path[neighbor.node] = currentNode;
+          path[neighbor.node] = Step(node: currentNode, runType: neighbor.runType);
 
           if (!priorityQueue.contains(neighbor.node)) {
             priorityQueue.add(neighbor.node);
@@ -44,23 +43,30 @@ class RouteAlgorithmService {
     return _constructRoute(path, endNode);
   }
 
-  static void _initializeDistancesAndPath(
-      Graph graph, Map<Node, double> distances, Map<Node, Node?> path) {
+  static void _initializeDistancesAndPath(Graph graph, Map<Node, double> distances, Map<Node, Step?> path) {
     for (var node in graph.nodes.values) {
       distances[node] = double.infinity;
       path[node] = null;
     }
   }
 
-  static List<Node> _constructRoute(Map<Node, Node?> path, Node endNode) {
-    final route = <Node>[];
-    Node? currentNode = endNode;
+  static List<Step> _constructRoute(Map<Node, Step?> path, Node endNode) {
+    final route = <Step>[];
+    Step? currentStep = path[endNode];
 
-    while (currentNode != null) {
-      route.add(currentNode);
-      currentNode = path[currentNode];
+    while (currentStep != null) {
+      print(currentStep);
+      route.add(currentStep);
+      currentStep = path[currentStep.node];
     }
 
     return route.reversed.toList();
   }
+}
+
+class Step {
+  Node node;
+  RunType runType;
+
+  Step({required this.node, required this.runType});
 }

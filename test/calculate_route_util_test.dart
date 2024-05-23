@@ -1,9 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
-import 'package:routing_service/model/node.dart';
 import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
+import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:test/test.dart';
 
@@ -14,17 +13,16 @@ class CalculateRouteUtilTest {
     bool exceptionThrown = false;
 
     try {
-      List<Node> nodes = await routing_service.calculateRouteReturnNode(userOption, startCoordinates, endCoordinates);
+      List<Step> steps = await routing_service.calculateRouteReturnNode(userOption, startCoordinates, endCoordinates);
 
-      var invalidRunNodes = nodes
-          .where((node) =>
-              node.nodeType == NodeType.run && node.runTypes.none((runType) => runType.index <= userOption.level.index))
+      var invalidRunStep = steps
+          .where((step) => step.node.nodeType == NodeType.run && step.runType.index <= userOption.level.index)
           .toList();
 
       // printNodes(invalidRunNodes, userOption);
       // printGeoJson(nodes);
 
-      expect(invalidRunNodes.isEmpty, isTrue, reason: 'The route contains a track higher level than the user.');
+      expect(invalidRunStep.isEmpty, isTrue, reason: 'The route contains a track higher level than the user.');
     } catch (e) {
       print('Exception caught: $e');
       exceptionThrown = true;
@@ -35,17 +33,17 @@ class CalculateRouteUtilTest {
     }
   }
 
-  static void printGeoJson(List<Node> nodes) {
-    final geoJson = GeoJsonUtils.pathToGeoJson(nodes);
+  static void printGeoJson(List<Step> steps) {
+    final geoJson = GeoJsonUtils.pathToGeoJson(steps);
     print('GeoJSON:');
     print(geoJson);
   }
 
-  static void printNodes(List<Node> nodes, UserOption userOption) {
-    for (var node in nodes) {
-      if (node.nodeType == NodeType.run) {
+  static void printNodes(List<Step> steps, UserOption userOption) {
+    for (var step in steps) {
+      if (step.node.nodeType == NodeType.run) {
         print(
-            'Nodo: ${node.names} ${node.latitude} ${node.longitude} ${node.altitude}, RunType: ${node.runTypes}, Nivel de usuario: ${userOption.level}');
+            'Step: ${step.node.latitude} ${step.node.longitude} ${step.node.altitude}, RunType: ${step.runType}, Nivel de usuario: ${userOption.level}');
       }
     }
   }

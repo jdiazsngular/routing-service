@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:routing_service/model/node.dart';
+import 'package:routing_service/service/route_algorithm_service.dart';
 
 class GeoJsonUtils {
-  static String pathToGeoJson(List<Node> path) {
+  static String pathToGeoJson(List<Step> steps) {
+    var path = steps.map((step) => step.node);
     final coordinates = path
         .map((node) => [node.longitude, node.latitude, node.altitude])
         .toList();

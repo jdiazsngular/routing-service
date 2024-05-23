@@ -11,26 +11,21 @@ Future<Graph> calculateGraph(String geoJson, UserOption userOption) async {
   return GraphService.geoJsonToGraph(jsonString, userOption);
 }
 
-Future<String> calculateRoute(UserOption userOption, List<double> startCoordinate,
-    List<double> endCoordinate) async {
+Future<String> calculateRoute(UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
 
-  Graph graph =
-      await calculateGraph('assets/filtered_lifts.geojson', userOption);
+  Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
 
   stopwatch.stop();
   print('Calculate graph time: ${stopwatch.elapsedMilliseconds} ms');
 
   stopwatch.reset();
   stopwatch.start();
-  Node startNode = graph.findClosestNode(
-      startCoordinate[0], startCoordinate[1], startCoordinate[2]);
-  Node endNode = graph.findClosestNode(
-      endCoordinate[0], endCoordinate[1], endCoordinate[2]);
+  Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
+  Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
-  final shortestPath =
-      RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
+  final shortestPath = RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
   stopwatch.stop();
   print('Calculate route time: ${stopwatch.elapsedMilliseconds} ms');
 
@@ -41,15 +36,12 @@ Future<String> calculateRoute(UserOption userOption, List<double> startCoordinat
   return geoJson;
 }
 
-Future<List<Node>> calculateRouteReturnNode(UserOption userOption,
-    List<double> startCoordinate, List<double> endCoordinate) async {
-  Graph graph =
-      await calculateGraph('assets/filtered_lifts.geojson', userOption);
+Future<List<Step>> calculateRouteReturnNode(
+    UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
+  Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
 
-  Node startNode = graph.findClosestNode(
-      startCoordinate[0], startCoordinate[1], startCoordinate[2]);
-  Node endNode = graph.findClosestNode(
-      endCoordinate[0], endCoordinate[1], endCoordinate[2]);
+  Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
+  Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
   return RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
 }

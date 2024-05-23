@@ -1,4 +1,5 @@
 import 'package:routing_service/enums/node_type_enum.dart';
+import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
@@ -17,8 +18,8 @@ class Graph {
     return nodes[key]!;
   }
 
-  void addNeighbor(Node node1, Node node2, double distance) {
-    node1.addNeighbor(node2, distance);
+  void addNeighbor(Node node1, Node node2, double distance, RunType runType, String name) {
+    node1.addNeighbor(node2, distance, runType, name);
   }
 
   Node findClosestNode(double lat, double lon, double alt) {

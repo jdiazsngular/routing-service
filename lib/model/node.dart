@@ -7,8 +7,6 @@ class Node {
   final double longitude;
   final double? altitude;
   final NodeType nodeType;
-  final List<RunType> runTypes;
-  final List<String> names;
   final List<Neighbor> neighbors;
 
   Node({
@@ -16,22 +14,10 @@ class Node {
     required this.longitude,
     this.altitude,
     required this.nodeType,
-    List<RunType>? runTypes,
-    List<String>? names,
     List<Neighbor>? neighbors,
-  })  : runTypes = runTypes ?? [],
-        names = names ?? [],
-        neighbors = neighbors ?? [];
+  }) : neighbors = neighbors ?? [];
 
-  void addNeighbor(Node neighbor, double distance) {
-    neighbors.add(Neighbor(node: neighbor, distance: distance));
-  }
-
-  void addName(String name) {
-    names.add(name);
-  }
-
-  void addRunType(RunType runType) {
-    runTypes.add(runType);
+  void addNeighbor(Node neighbor, double distance, RunType runType, String name) {
+    neighbors.add(Neighbor(node: neighbor, distance: distance, runType: runType, name: name));
   }
 }
