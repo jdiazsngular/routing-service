@@ -11,7 +11,7 @@ Future<Graph> calculateGraph(String geoJson, UserOption userOption) async {
   return GraphService.geoJsonToGraph(jsonString, userOption);
 }
 
-void calculateRoute(UserOption userOption, List<double> startCoordinate,
+Future<String> calculateRoute(UserOption userOption, List<double> startCoordinate,
     List<double> endCoordinate) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
@@ -35,8 +35,10 @@ void calculateRoute(UserOption userOption, List<double> startCoordinate,
   print('Calculate route time: ${stopwatch.elapsedMilliseconds} ms');
 
   final geoJson = GeoJsonUtils.pathToGeoJson(shortestPath);
-  print('GeoJSON:');
+  print('-------------------- geojson ---------------------');
   print(geoJson);
+
+  return geoJson;
 }
 
 Future<List<Node>> calculateRouteReturnNode(UserOption userOption,
