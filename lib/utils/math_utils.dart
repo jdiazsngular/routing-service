@@ -28,50 +28,19 @@ class MathUtil {
   }
 
   static double calculateFactorFor(Node fromNode, Node toNode, RunType runType, UserOption userOption) {
-    if (userOption.level == RunType.freeride || fromNode.altitude == null || toNode.altitude == null) {
-      return 0.0;
-    }
-
-    double unevenness = toNode.altitude! - fromNode.altitude!;
-    double factor = 0.0;
-
-    if (unevenness > 0) {
-      if (fromNode.nodeType == NodeType.lift) {
-        factor = 0.1;
-      } else if (fromNode.nodeType == NodeType.run) {
-        factor = unevenness * 1000;
-        if (runType.index > userOption.level.index) {
-          factor *= 10;
-        }
-      }
-    } else {
-      if (fromNode.nodeType == NodeType.run) {
-        factor = unevenness.abs() * 3;
-        if (runType.index > userOption.level.index) {
-          factor *= 1000;
-        }
-      } else if (fromNode.nodeType == NodeType.lift) {
-        factor = unevenness.abs();
-      }
-    }
-
-    return factor;
-  }
-
-    static double calculateFactorForOld(Node fromNode, Node toNode, UserOption userOption, RunType? runType) {
     double factor = 0.0;
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
     if (fromNode.nodeType == NodeType.lift) {
-      factor = min(0, unevenness).toDouble().abs();
+      factor = min(0, unevenness).toDouble().abs() * 3;
     }
 
     if (fromNode.nodeType == NodeType.run) {
       factor = max(0, unevenness) * 3;
 
-      if (runType!.index > userOption.level.index) {
-        factor = unevenness.abs() * 100;
+      if (runType.index > userOption.level.index) {
+        factor = unevenness.abs() * 20;
       }
     }
 

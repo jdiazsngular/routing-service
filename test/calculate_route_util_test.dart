@@ -16,11 +16,11 @@ class CalculateRouteUtilTest {
       List<Step> steps = await routing_service.calculateRouteReturnNode(userOption, startCoordinates, endCoordinates);
 
       var invalidRunStep = steps
-          .where((step) => step.node.nodeType == NodeType.run && step.runType.index <= userOption.level.index)
+          .where((step) => step.node.nodeType == NodeType.run && step.runType.index > userOption.level.index)
           .toList();
 
-      // printNodes(invalidRunNodes, userOption);
-      // printGeoJson(nodes);
+      printNodes(invalidRunStep, userOption);
+      printGeoJson(steps);
 
       expect(invalidRunStep.isEmpty, isTrue, reason: 'The route contains a track higher level than the user.');
     } catch (e) {

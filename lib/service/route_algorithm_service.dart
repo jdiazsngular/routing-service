@@ -7,7 +7,7 @@ import 'package:routing_service/model/node.dart';
 class RouteAlgorithmService {
   static List<Step> findShortestPath(Graph graph, Node startNode, Node endNode) {
     final distances = <Node, double>{};
-    final path = <Node, Step>{};
+    final path = <Node, Step?>{};
     final priorityQueue = PriorityQueue<Node>((a, b) => distances[a]!.compareTo(distances[b]!));
 
     _initializeDistancesAndPath(graph, distances, path);
@@ -55,7 +55,6 @@ class RouteAlgorithmService {
     Step? currentStep = path[endNode];
 
     while (currentStep != null) {
-      print(currentStep);
       route.add(currentStep);
       currentStep = path[currentStep.node];
     }
