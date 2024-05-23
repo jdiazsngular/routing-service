@@ -28,12 +28,12 @@ class MathUtil {
   }
 
   static double calculateFactorFor(Node fromNode, Node toNode, List<RunType> runTypes, UserOption userOption) {
-    double factor = 0.0;
-
-    if (userOption.level == RunType.freeride) return factor;
-    if (fromNode.altitude == null || toNode.altitude == null) return factor;
+    if (userOption.level == RunType.freeride || fromNode.altitude == null || toNode.altitude == null) {
+      return 0.0;
+    }
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
+    double factor = 0.0;
 
     if (unevenness > 0) {
       if (fromNode.nodeType == NodeType.lift) {
