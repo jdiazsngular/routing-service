@@ -10,17 +10,11 @@ class Graph {
     return '$lat,$long,${alt ?? ''}';
   }
 
-  Node addNode(String name, double lat, double long, double? alt,
-      NodeType nodeType, RunType pisteType) {
+  Node addNode(double lat, double long, double? alt, NodeType nodeType) {
     final key = _getNodeKey(lat, long, alt);
     if (!nodes.containsKey(key)) {
       nodes[key] = Node(
-          name: name,
-          latitude: lat,
-          longitude: long,
-          altitude: alt,
-          nodeType: nodeType,
-          runType: pisteType);
+          latitude: lat, longitude: long, altitude: alt, nodeType: nodeType);
     }
     return nodes[key]!;
   }

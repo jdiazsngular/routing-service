@@ -37,6 +37,10 @@ class RouteAlgorithmService {
       }
     }
 
+    if (distances[endNode] == double.infinity) {
+      throw Exception('No route available within the user\'s skill level');
+    }
+
     return _constructRoute(path, endNode);
   }
 

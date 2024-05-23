@@ -47,10 +47,10 @@ class GraphService {
 
       final currentToNextCost = distance +
           MathUtil.calculateFactorFor(
-              currentNode, nextNode, runType, userOption);
+              currentNode, nextNode, currentNode.runTypes, userOption);
       final nextToCurrentCost = distance +
           MathUtil.calculateFactorFor(
-              nextNode, currentNode, runType, userOption);
+              nextNode, currentNode, nextNode.runTypes, userOption);
 
       graph.addNeighbor(currentNode, nextNode, currentToNextCost);
       graph.addNeighbor(nextNode, currentNode, nextToCurrentCost);
@@ -60,12 +60,12 @@ class GraphService {
   static Node _createNode(Graph graph, String name, currentCoord,
       NodeType nodeType, RunType runType) {
     final currentNode = graph.addNode(
-        name,
         currentCoord[1].toDouble(),
         currentCoord[0].toDouble(),
         _getOptionalRange(currentCoord, 2),
-        nodeType,
-        runType);
+        nodeType);
+    currentNode.addName(name);
+    currentNode.addRunType(runType);
     return currentNode;
   }
 

@@ -30,27 +30,32 @@ class MathUtil {
     return _earthRadius * c * 1000;
   }
 
-  static double calculateFactorFor(
-      Node fromNode, Node toNode, RunType? runType, UserOption userOption) {
+  static double calculateFactorFor(Node fromNode, Node toNode,
+      List<RunType> runTypes, UserOption userOption) {
     double factor = 0.0;
+
+    if (userOption.level == RunType.freeride) return factor;
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
 
     if (unevenness > 0) {
       if (fromNode.nodeType == NodeType.lift) {
-        factor = min(0, unevenness).toDouble().abs();
+        factor = 0.1;
       } else if (fromNode.nodeType == NodeType.run) {
-        factor = max(0, unevenness) * 3;
+        factor = unevenness * 1000;
+        if (runTypes.any((runType) => runType.index > userOption.level.index)) {
+          factor *= 10;
+        }
       }
     } else {
       if (fromNode.nodeType == NodeType.run) {
-        factor = max(0, unevenness.abs()) * 3;
-        if (runType!.index > userOption.level.index) {
+        factor = unevenness.abs() * 3;
+        if (runTypes.any((runType) => runType.index > userOption.level.index)) {
           factor *= 1000;
         }
       } else if (fromNode.nodeType == NodeType.lift) {
-        factor = max(0, unevenness.abs()) * 0.1;
+        factor = unevenness.abs();
       }
     }
 
