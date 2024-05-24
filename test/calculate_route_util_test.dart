@@ -9,16 +9,15 @@ import 'package:test/test.dart';
 class CalculateRouteUtilTest {
   static Future<void> testCalculateRoute(
       RunType userLevel, List<double> startCoordinates, List<double> endCoordinates) async {
+    
     UserOption userOption = UserOption(level: userLevel);
     bool exceptionThrown = false;
 
     try {
       List<Step> steps = await routing_service.calculateRouteReturnNode(userOption, startCoordinates, endCoordinates);
 
-      var invalidRunStep = steps
-          .where((step) => step.node.nodeType == NodeType.run && step.runType.index > userOption.level.index)
-          .toList();
-
+      var invalidRunStep = routing_service.getInvalidRunSteps(steps, userOption.level);
+      
       printNodes(invalidRunStep, userOption);
       printGeoJson(steps);
 

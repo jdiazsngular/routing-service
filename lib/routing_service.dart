@@ -1,3 +1,5 @@
+import 'package:routing_service/enums/node_type_enum.dart';
+import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/model/user_option.dart';
@@ -44,4 +46,9 @@ Future<List<Step>> calculateRouteReturnNode(
   Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
   return RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
+}
+
+List<Step> getInvalidRunSteps(List<Step> steps, RunType userLevel) {
+  return steps.where((step) => step.node.nodeType == NodeType.run && step.runType.index > userLevel.index)
+          .toList();
 }
