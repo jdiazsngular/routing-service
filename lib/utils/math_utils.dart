@@ -32,18 +32,27 @@ class MathUtil {
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
+    
     if (fromNode.nodeType == NodeType.lift) {
-      factor = min(0, unevenness).toDouble().abs() * 3;
+      double increaseFactorWhenGoDownByLift = min(0, unevenness).toDouble().abs() * 3;
+      factor = increaseFactorWhenGoDownByLift;
     }
 
     if (fromNode.nodeType == NodeType.run) {
-      factor = max(0, unevenness) * 3;
+      double increseFactorWhenGoUpByRun = max(0, unevenness) * 3;
+      factor = increseFactorWhenGoUpByRun;
 
-      if (runType.index > userOption.level.index) {
-        factor = unevenness.abs() * 20;
-      }
+      factor = increaseFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
     }
 
+    return factor;
+  }
+
+  static double increaseFactorWhenRunTypeIsMoreDifficultThanUserLevel(RunType runType, RunType userLevel, double unevenness) {
+    double factor = 0;
+    if (runType.index > userLevel.index) {
+      factor = unevenness.abs() * 20;
+    }
     return factor;
   }
 }
