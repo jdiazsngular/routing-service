@@ -42,13 +42,13 @@ class MathUtil {
       double increseFactorWhenGoUpByRun = max(0, unevenness) * 3;
       factor = increseFactorWhenGoUpByRun;
 
-      factor = increaseFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
+      factor = getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
     }
 
     return factor;
   }
 
-  static double increaseFactorWhenRunTypeIsMoreDifficultThanUserLevel(RunType runType, RunType userLevel, double unevenness) {
+  static double getFactorWhenRunTypeIsMoreDifficultThanUserLevel(RunType runType, RunType userLevel, double unevenness) {
     double factor = 0;
     if (runType.index > userLevel.index) {
       factor = unevenness.abs() * 20;
