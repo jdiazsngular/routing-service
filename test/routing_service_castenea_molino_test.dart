@@ -2,9 +2,8 @@ import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
+import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:test/test.dart';
-
-import 'calculate_route_util_test.dart';
 
 void main() {
   group("Calculate Route from", () {
@@ -70,8 +69,9 @@ void main() {
 
     var list = await routing_service.calculateAlternateRoute(
         userOption, Fixture.castanesaBottomCoordinates, Fixture.molinoBottomCoordinates, 2);
-    
-    CalculateRouteUtilTest.printNodes(list.first);
+        
+  print(GeoJsonUtils.pathToGeoJson(list.first));
+  print(GeoJsonUtils.pathToGeoJson(list.last));
   });
 }
 

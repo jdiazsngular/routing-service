@@ -3,6 +3,7 @@ import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/neighbor.dart';
 import 'package:routing_service/model/node.dart';
+import 'package:routing_service/utils/math_utils.dart';
 
 /// Dijkstra Algorithm: Encuentra la ruta más corta desde un nodo origen a un nodo destino
 class RouteAlgorithmService {
@@ -75,16 +76,17 @@ class RouteAlgorithmService {
     });
 
     for (int k = 1; k < K; k++) {
-      for (int i = 0; i < kShortestPaths[k - 1].length; i++) {
+      for (int i = 0; i < kShortestPaths[k - 1].length - 1; i++) {
         Node spurNode = kShortestPaths[k - 1][i].node;
-        List<Step> rootPath = kShortestPaths[k - 1].sublist(0, i);
+        List<Step> rootPath = kShortestPaths[k - 1].sublist(0, i + 1);
 
         List<List<Neighbor>> removedEdges = [];
         for (List<Step> path in kShortestPaths) {
           if (_isSameRootPath(rootPath, path, i + 1)) {
             Node u = path[i].node;
             Node v = path[i + 1].node;
-            removedEdges.add(graph.removeEdge(u, v));
+            var removedEdge = graph.removeEdge(u, v);
+            if (removedEdge.length == 2) removedEdges.add(removedEdge);
           }
         }
 
@@ -101,13 +103,7 @@ class RouteAlgorithmService {
         }
       }
 
-      if (potentialPaths.isEmpty) {
-        break;
-      }
-
-      if (potentialPaths.isNotEmpty) {
-        kShortestPaths.add(potentialPaths.removeFirst());
-      }
+      kShortestPaths.add(potentialPaths.removeFirst());
     }
 
     return kShortestPaths;
@@ -115,8 +111,17 @@ class RouteAlgorithmService {
 
   static double _calculatePathDistance(List<Step> path) {
     double totalDistance = 0.0;
-    for (var step in path) {
-      totalDistance += step.node.neighbors.firstWhere((neighbor) => neighbor.node == step.node).distance;
+    for (var i = 0; i < path.length - 1; i++) {
+      var currentNode = path.elementAt(i).node;
+      var nextNode = path.elementAt(i+1).node;
+      var currentNeightbor = currentNode.neighbors.firstWhereOrNull((element) => element.node == nextNode);
+      var distance = 0.0;
+      if (currentNeightbor != null) {
+        distance = currentNeightbor.distance;
+      } else {
+        distance = MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
+      }
+      totalDistance += distance;
     }
     return totalDistance;
   }
