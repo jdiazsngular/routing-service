@@ -20,4 +20,9 @@ class Node {
   void addNeighbor(Node neighbor, double distance, RunType runType, String name) {
     neighbors.add(Neighbor(node: neighbor, distance: distance, runType: runType, name: name));
   }
+
+  @override
+  String toString() {
+    return "[$latitude, $longitude, $altitude]";
+  }
 }

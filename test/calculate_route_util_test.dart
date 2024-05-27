@@ -18,7 +18,8 @@ class CalculateRouteUtilTest {
 
       var invalidRunStep = routing_service.getInvalidRunSteps(steps, userOption.level);
       
-      printNodes(invalidRunStep, userOption);
+      print("----------------- User Level: $userLevel -----------------");
+      printNodes(invalidRunStep);
       printGeoJson(steps);
 
       expect(invalidRunStep.isEmpty, isTrue, reason: 'The route contains a track higher level than the user.');
@@ -34,15 +35,15 @@ class CalculateRouteUtilTest {
 
   static void printGeoJson(List<Step> steps) {
     final geoJson = GeoJsonUtils.pathToGeoJson(steps);
-    print('GeoJSON:');
+    print('**** GeoJSON ****');
     print(geoJson);
   }
 
-  static void printNodes(List<Step> steps, UserOption userOption) {
+  static void printNodes(List<Step> steps) {
     for (var step in steps) {
       if (step.node.nodeType == NodeType.run) {
         print(
-            'Step: ${step.node.latitude} ${step.node.longitude} ${step.node.altitude}, RunType: ${step.runType}, Nivel de usuario: ${userOption.level}');
+            'Step: ${step.node.latitude} ${step.node.longitude} ${step.node.altitude}, RunType: ${step.runType}');
       }
     }
   }

@@ -1,5 +1,6 @@
 import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
+import 'package:routing_service/model/neighbor.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
@@ -36,5 +37,29 @@ class Graph {
     }
 
     return closestNode!;
+  }
+
+  List<Neighbor> removeEdge(Node origin, Node destination) {
+    List<Neighbor> removedNeighbors = [];
+    origin.neighbors.removeWhere((neighbor) {
+      if (neighbor.node == destination) {
+        removedNeighbors.add(neighbor);
+        return true;
+      }
+      return false;
+    });
+    destination.neighbors.removeWhere((neighbor) {
+      if (neighbor.node == origin) {
+        removedNeighbors.add(neighbor);
+        return true;
+      }
+      return false;
+    });
+    return removedNeighbors;
+  }
+
+  void addEdge(Neighbor origin, Neighbor destination) {
+    origin.node.addNeighbor(destination.node, destination.distance, destination.runType, destination.name);
+    destination.node.addNeighbor(origin.node, origin.distance, origin.runType, origin.name);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
+import 'package:routing_service/model/neighbor.dart';
 import 'package:routing_service/model/node.dart';
 
 /// Dijkstra Algorithm: Encuentra la ruta más corta desde un nodo origen a un nodo destino
@@ -61,6 +62,74 @@ class RouteAlgorithmService {
 
     return route.reversed.toList();
   }
+
+  static List<List<Step>> findKShortestPaths(Graph graph, Node startNode, Node endNode, int K) {
+    List<List<Step>> kShortestPaths = [];
+
+    // Encuentra el camino más corto inicial
+    List<Step> initialShortestPath = findShortestPath(graph, startNode, endNode);
+    kShortestPaths.add(initialShortestPath);
+
+    PriorityQueue<List<Step>> potentialPaths = PriorityQueue<List<Step>>((a, b) {
+      return _calculatePathDistance(a).compareTo(_calculatePathDistance(b));
+    });
+
+    for (int k = 1; k < K; k++) {
+      for (int i = 0; i < kShortestPaths[k - 1].length; i++) {
+        Node spurNode = kShortestPaths[k - 1][i].node;
+        List<Step> rootPath = kShortestPaths[k - 1].sublist(0, i);
+
+        List<List<Neighbor>> removedEdges = [];
+        for (List<Step> path in kShortestPaths) {
+          if (_isSameRootPath(rootPath, path, i + 1)) {
+            Node u = path[i].node;
+            Node v = path[i + 1].node;
+            removedEdges.add(graph.removeEdge(u, v));
+          }
+        }
+
+        try {
+          List<Step> spurPath = findShortestPath(graph, spurNode, endNode);
+          List<Step> totalPath = List<Step>.from(rootPath)..addAll(spurPath);
+          potentialPaths.add(totalPath);
+        } catch (e) {
+          // No valid spur path, continue
+        }
+
+        for (var edges in removedEdges) {
+          graph.addEdge(edges.first, edges.last);
+        }
+      }
+
+      if (potentialPaths.isEmpty) {
+        break;
+      }
+
+      if (potentialPaths.isNotEmpty) {
+        kShortestPaths.add(potentialPaths.removeFirst());
+      }
+    }
+
+    return kShortestPaths;
+  }
+
+  static double _calculatePathDistance(List<Step> path) {
+    double totalDistance = 0.0;
+    for (var step in path) {
+      totalDistance += step.node.neighbors.firstWhere((neighbor) => neighbor.node == step.node).distance;
+    }
+    return totalDistance;
+  }
+
+  static bool _isSameRootPath(List<Step> rootPath, List<Step> path, int length) {
+    if (rootPath.length != length) return false;
+    for (int i = 0; i < length; i++) {
+      if (rootPath[i].node != path[i].node) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 class Step {
@@ -68,4 +137,9 @@ class Step {
   RunType runType;
 
   Step({required this.node, required this.runType});
+
+  @override
+  String toString() {
+    return "{${node.toString()}, runType: $runType}";
+  }
 }
