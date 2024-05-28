@@ -73,7 +73,7 @@ void main() {
   });
 
   group("Calculate alternate Routes from", () {
-    test("Castena to molino with user level intermediate", () async {
+    test("Castena to molino with user level advanced", () async {
       UserOption userOption = UserOption(level: RunType.advanced);
 
       var list = await routing_service.calculateAlternateRoute(
