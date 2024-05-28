@@ -93,7 +93,7 @@ class Fixture {
   static final List<double> sarrauTopLiftCoordinates = [42.5616022, 0.5525032, 2314.27];
   static final List<double> molinoTopLiftCoordinates = [42.567049499999996, 0.5418477, 2011.29];
   static final List<double> molinoBottomLiftCoordinates = [42.586867299999994, 0.5400737, 1506.83];
-  static final List<double> castanesaBottomLiftCoordinates = [42.5523, 0.6062, 2025.8];
+  static final List<double> castanesaBottomLiftCoordinates = [42.552251, 0.6062035, 2025.8];
   static final List<double> batisiellesTopLiftCoordinates = [42.554961899999995, 0.5531225, 2251.9500000000003];
 
   static final List<double> basibeNouFontsRunCoordinates = [42.55187939999999, 0.5903671999999996, 2324.7];
