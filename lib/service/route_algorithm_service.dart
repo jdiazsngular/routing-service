@@ -54,7 +54,7 @@ class RouteAlgorithmService {
 
   static List<Step> _constructRoute(Map<Node, Step?> path, Node endNode) {
     final route = <Step>[];
-    Step? currentStep = path[endNode];
+    Step? currentStep = Step(node: endNode, runType: path[endNode]!.runType);
 
     while (currentStep != null) {
       route.add(currentStep);
