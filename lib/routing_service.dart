@@ -38,7 +38,7 @@ Future<String> calculateRoute(UserOption userOption, List<double> startCoordinat
   return geoJson;
 }
 
-Future<List<Step>> calculateRouteReturnNode(
+Future<List<Step>> calculateRouteSteps(
     UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
   Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
 
@@ -59,6 +59,5 @@ Future<List<List<Step>>> calculateAlternateRoute(
 }
 
 List<Step> getInvalidRunSteps(List<Step> steps, RunType userLevel) {
-  return steps.where((step) => step.node.nodeType == NodeType.run && step.runType.index > userLevel.index)
-          .toList();
+  return steps.where((step) => step.node.nodeType == NodeType.run && step.runType.index > userLevel.index).toList();
 }
