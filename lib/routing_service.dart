@@ -31,7 +31,7 @@ Future<String> calculateRoute(UserOption userOption, List<double> startCoordinat
   stopwatch.stop();
   print('Calculate route time: ${stopwatch.elapsedMilliseconds} ms');
 
-  final geoJson = GeoJsonUtils.pathToGeoJson(shortestPath);
+  final geoJson = GeoJsonUtils.pathToGeoJsonFeature(shortestPath);
   print('-------------------- geojson ---------------------');
   print(geoJson);
 
@@ -55,7 +55,7 @@ Future<List<List<Step>>> calculateAlternateRoute(
   Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
   Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
-  return RouteAlgorithmService.findKShortestPaths(graph, startNode, endNode, numberOfPaths);
+  return RouteAlgorithmService.findKShortestPaths(graph, startNode, endNode, numberOfPaths, userOption);
 }
 
 List<Step> getInvalidRunSteps(List<Step> steps, RunType userLevel) {

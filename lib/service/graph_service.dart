@@ -41,13 +41,11 @@ class GraphService {
 
       final distance = MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
 
-      final currentToNextCost =
-          distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption);
-      final nextToCurrentCost =
-          distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption);
+      final currentToNextWeight = distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption);
+      final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption);
 
-      graph.addNeighbor(currentNode, nextNode, currentToNextCost, runType, name);
-      graph.addNeighbor(nextNode, currentNode, nextToCurrentCost, runType, name);
+      graph.assignNeighbor(currentNode, nextNode, distance, currentToNextWeight, runType, name);
+      graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name);
     }
   }
 

@@ -1,8 +1,7 @@
 import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/user_option.dart';
-import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
-import 'package:routing_service/utils/geojson_utils.dart';
+import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:test/test.dart';
 
 import 'features/cerler_fixtures.dart';
@@ -17,6 +16,7 @@ void main() {
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(18));
+      expect(steps, hasLength(129));
       expect(steps, containsCoordinates(CerlerFixture.basibeTopLiftCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.ampriuBottomLiftCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.sarrauTopLiftCoordinates));
@@ -31,6 +31,7 @@ void main() {
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(1));
+      expect(steps, hasLength(148));
       expect(steps, containsCoordinates(CerlerFixture.basibeNouFontsRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.basibeRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.batisiellesTopLiftCoordinates));
@@ -46,6 +47,7 @@ void main() {
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
+      expect(steps, hasLength(128));
       expect(steps, containsCoordinates(CerlerFixture.castanesaBottomLiftCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.basibeNouFontsRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.laFetiellaRunCoordinates));
@@ -63,6 +65,7 @@ void main() {
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
+      expect(steps, hasLength(131));
       expect(steps, containsCoordinates(CerlerFixture.basibeNouFontsRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.pasoLobinoRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.ampriuBottomLiftCoordinates));
@@ -78,11 +81,11 @@ void main() {
 
       var list = await routing_service.calculateAlternateRoute(
           userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates, 3);
-
+      
       expect(list, hasLength(3));
-      print(GeoJsonUtils.pathToGeoJson(list.first));
-      print(GeoJsonUtils.pathToGeoJson(list.elementAt(1)));
-      print(GeoJsonUtils.pathToGeoJson(list.last));
+      expect(list.first, hasLength(131));
+      expect(list.elementAt(1), hasLength(168));
+      expect(list.last, hasLength(150));
     });
   });
 }

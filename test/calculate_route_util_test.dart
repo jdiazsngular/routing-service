@@ -33,7 +33,7 @@ class CalculateRouteUtilTest {
   }
 
   static void printGeoJson(List<Step> steps) {
-    final geoJson = GeoJsonUtils.pathToGeoJson(steps);
+    final geoJson = GeoJsonUtils.pathToGeoJsonFeature(steps);
     print('**** GeoJSON ****');
     print(geoJson);
   }

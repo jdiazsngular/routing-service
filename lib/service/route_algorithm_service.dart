@@ -1,20 +1,18 @@
 import 'package:collection/collection.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
-import 'package:routing_service/model/neighbor.dart';
 import 'package:routing_service/model/node.dart';
-import 'package:routing_service/utils/math_utils.dart';
+import 'package:routing_service/model/user_option.dart';
 
-/// Dijkstra Algorithm: Encuentra la ruta más corta desde un nodo origen a un nodo destino
 class RouteAlgorithmService {
   static List<Step> findShortestPath(Graph graph, Node startNode, Node endNode) {
-    final distances = <Node, double>{};
+    final weights = <Node, double>{};
     final path = <Node, Step?>{};
-    final priorityQueue = PriorityQueue<Node>((a, b) => distances[a]!.compareTo(distances[b]!));
+    final priorityQueue = PriorityQueue<Node>((a, b) => weights[a]!.compareTo(weights[b]!));
 
-    _initializeDistancesAndPath(graph, distances, path);
+    _initializeDistancesAndPath(graph, weights, path);
 
-    distances[startNode] = 0.0;
+    weights[startNode] = 0.0;
     priorityQueue.add(startNode);
 
     while (priorityQueue.isNotEmpty) {
@@ -25,10 +23,10 @@ class RouteAlgorithmService {
       }
 
       for (var neighbor in currentNode.neighbors) {
-        final distance = distances[currentNode]! + neighbor.distance;
+        final weight = weights[currentNode]! + neighbor.weight;
 
-        if (distance < distances[neighbor.node]!) {
-          distances[neighbor.node] = distance;
+        if (weight < weights[neighbor.node]!) {
+          weights[neighbor.node] = weight;
           path[neighbor.node] = Step(node: currentNode, runType: neighbor.runType);
 
           if (!priorityQueue.contains(neighbor.node)) {
@@ -38,7 +36,7 @@ class RouteAlgorithmService {
       }
     }
 
-    if (distances[endNode] == double.infinity) {
+    if (weights[endNode] == double.infinity) {
       throw Exception('No route available within the user\'s skill level');
     }
 
@@ -64,76 +62,25 @@ class RouteAlgorithmService {
     return route.reversed.toList();
   }
 
-  static List<List<Step>> findKShortestPaths(Graph graph, Node startNode, Node endNode, int K) {
+  static List<List<Step>> findKShortestPaths(Graph graph, Node startNode, Node endNode, int K, UserOption userOption) {
     List<List<Step>> kShortestPaths = [];
 
-    // Encuentra el camino más corto inicial
     List<Step> initialShortestPath = findShortestPath(graph, startNode, endNode);
     kShortestPaths.add(initialShortestPath);
 
-    PriorityQueue<List<Step>> potentialPaths = PriorityQueue<List<Step>>((a, b) {
-      return _calculatePathDistance(a).compareTo(_calculatePathDistance(b));
-    });
-
     for (int k = 1; k < K; k++) {
-      for (int i = 0; i < kShortestPaths[k - 1].length - 1; i++) {
-        Node spurNode = kShortestPaths[k - 1][i].node;
-        List<Step> rootPath = kShortestPaths[k - 1].sublist(0, i + 1);
+      var currentkShortestPath = kShortestPaths[k - 1];
 
-        List<List<Neighbor>> removedEdges = [];
-        for (List<Step> path in kShortestPaths) {
-          if (_isSameRootPath(rootPath, path, i + 1)) {
-            Node u = path[i].node;
-            Node v = path[i + 1].node;
-            var removedEdge = graph.removeEdge(u, v);
-            if (removedEdge.length == 2) removedEdges.add(removedEdge);
-          }
-        }
-
-        try {
-          List<Step> spurPath = findShortestPath(graph, spurNode, endNode);
-          List<Step> totalPath = List<Step>.from(rootPath)..addAll(spurPath);
-          potentialPaths.add(totalPath);
-        } catch (e) {
-          // No valid spur path, continue
-        }
-
-        for (var edges in removedEdges) {
-          graph.addEdge(edges.first, edges.last);
-        }
+      for (int i = 0; i < currentkShortestPath.length - 1; i++) {
+        Node node = currentkShortestPath[i].node;
+        Node nextNode = currentkShortestPath[i + 1].node;
+        graph.penalizeNeightborFor(node, nextNode, userOption);
       }
-
-      kShortestPaths.add(potentialPaths.removeFirst());
+      List<Step> alternatePath = findShortestPath(graph, startNode, endNode);
+      kShortestPaths.add(alternatePath);
     }
 
     return kShortestPaths;
-  }
-
-  static double _calculatePathDistance(List<Step> path) {
-    double totalDistance = 0.0;
-    for (var i = 0; i < path.length - 1; i++) {
-      var currentNode = path.elementAt(i).node;
-      var nextNode = path.elementAt(i+1).node;
-      var currentNeightbor = currentNode.neighbors.firstWhereOrNull((element) => element.node == nextNode);
-      var distance = 0.0;
-      if (currentNeightbor != null) {
-        distance = currentNeightbor.distance;
-      } else {
-        distance = MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
-      }
-      totalDistance += distance;
-    }
-    return totalDistance;
-  }
-
-  static bool _isSameRootPath(List<Step> rootPath, List<Step> path, int length) {
-    if (rootPath.length != length) return false;
-    for (int i = 0; i < length; i++) {
-      if (rootPath[i].node != path[i].node) {
-        return false;
-      }
-    }
-    return true;
   }
 }
 

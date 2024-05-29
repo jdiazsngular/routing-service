@@ -1,7 +1,7 @@
 import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
-import 'package:routing_service/model/neighbor.dart';
 import 'package:routing_service/model/node.dart';
+import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/utils/math_utils.dart';
 
 class Graph {
@@ -19,8 +19,8 @@ class Graph {
     return nodes[key]!;
   }
 
-  void addNeighbor(Node node1, Node node2, double distance, RunType runType, String name) {
-    node1.addNeighbor(node2, distance, runType, name);
+  void assignNeighbor(Node node1, Node node2, double distance, double weight, RunType runType, String name) {
+    node1.addNeighbor(node2, distance, weight, runType, name);
   }
 
   Node findClosestNode(double lat, double lon, double alt) {
@@ -39,27 +39,16 @@ class Graph {
     return closestNode!;
   }
 
-  List<Neighbor> removeEdge(Node origin, Node destination) {
-    List<Neighbor> removedNeighbors = [];
-    origin.neighbors.removeWhere((neighbor) {
-      if (neighbor.node == destination) {
-        removedNeighbors.add(neighbor);
-        return true;
+  void penalizeNeightborFor(Node node, Node nextNode, UserOption userOption) {
+    double penalizationFactor = 1.5;
+    if (node.nodeType == NodeType.run && nextNode.nodeType != NodeType.lift) {
+      Node? graphNode = nodes[node.getKey()];
+      if (graphNode == null) return;
+      for (var neighbor in graphNode.neighbors) {
+        if (neighbor.node.getKey() == nextNode.getKey()) {
+          neighbor.weight = neighbor.weight * penalizationFactor;
+        }
       }
-      return false;
-    });
-    destination.neighbors.removeWhere((neighbor) {
-      if (neighbor.node == origin) {
-        removedNeighbors.add(neighbor);
-        return true;
-      }
-      return false;
-    });
-    return removedNeighbors;
-  }
-
-  void addEdge(Neighbor origin, Neighbor destination) {
-    origin.node.addNeighbor(destination.node, destination.distance, destination.runType, destination.name);
-    destination.node.addNeighbor(origin.node, origin.distance, origin.runType, origin.name);
+    }
   }
 }

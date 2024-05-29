@@ -17,8 +17,12 @@ class Node {
     List<Neighbor>? neighbors,
   }) : neighbors = neighbors ?? [];
 
-  void addNeighbor(Node neighbor, double distance, RunType runType, String name) {
-    neighbors.add(Neighbor(node: neighbor, distance: distance, runType: runType, name: name));
+  String getKey() {
+    return '$latitude,$longitude,${altitude ?? ''}';
+  }
+
+  void addNeighbor(Node neighbor, double distance, double weight, RunType runType, String name) {
+    neighbors.add(Neighbor(node: neighbor, distance: distance, weight: weight, runType: runType, name: name));
   }
 
   @override
