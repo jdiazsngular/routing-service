@@ -40,11 +40,7 @@ class MathUtil {
     if (fromNode.nodeType == NodeType.run) {
       factor = _getIncreseFactorWhenGoUpByRun(unevenness);
 
-<<<<<<< HEAD
-      factor += getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
-=======
       factor += _getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
->>>>>>> develop
     }
 
     return factor;
