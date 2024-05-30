@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
@@ -81,6 +82,61 @@ class RouteAlgorithmService {
     }
 
     return kShortestPaths;
+  }
+
+  static List<Step> findLongestPath(Graph graph, Node startNode, Node endNode) {
+    final path = <Node, List<Step>>{};
+    final visited = <Node>{};
+    final route = _dfs(graph, startNode, endNode, path, visited, null);
+
+    if (route == null || route.isEmpty || route.last.node != endNode) {
+      throw Exception('No route available within the user\'s skill level');
+    }
+    return route;
+  }
+
+  static List<Step>? _dfs(
+    Graph graph,
+    Node currentNode,
+    Node endNode,
+    Map<Node, List<Step>> path,
+    Set<Node> visited,
+    NodeType? previousNodeType,
+  ) {
+    if (currentNode == endNode) {
+      return [Step(node: endNode, runType: RunType.unknown)];
+    }
+    if (path.containsKey(currentNode)) {
+      return path[currentNode];
+    }
+    visited.add(currentNode);
+
+    List<Step>? longestPath;
+    for (var neighbor in currentNode.neighbors) {
+      if (!visited.contains(neighbor.node) && isTransitionValid(previousNodeType, currentNode.nodeType)) {
+        final route = _dfs(graph, neighbor.node, endNode, path, visited, currentNode.nodeType);
+
+        if (route != null &&
+            route.isNotEmpty &&
+            route.last.node == endNode &&
+            (longestPath == null || route.length + 1 > longestPath.length)) {
+          longestPath = [Step(node: currentNode, runType: neighbor.runType)] + route;
+        }
+      }
+    }
+
+    visited.remove(currentNode);
+    path[currentNode] = longestPath ?? [];
+    return path[currentNode];
+  }
+
+  static bool isTransitionValid(NodeType? previousNodeType, NodeType currentNodeType) {
+    if (previousNodeType == null) {
+      return true;
+    }
+    return (previousNodeType == NodeType.run && currentNodeType == NodeType.lift) ||
+        (previousNodeType == NodeType.lift && currentNodeType == NodeType.run) ||
+        (previousNodeType == NodeType.run && currentNodeType == NodeType.run);
   }
 }
 

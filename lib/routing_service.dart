@@ -48,6 +48,16 @@ Future<List<Step>> calculateRouteSteps(
   return RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
 }
 
+Future<List<Step>> calculateLongestRouteSteps(
+    UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
+  Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
+
+  Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
+  Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
+
+  return RouteAlgorithmService.findLongestPath(graph, startNode, endNode);
+}
+
 Future<List<List<Step>>> calculateAlternateRoute(
     UserOption userOption, List<double> startCoordinate, List<double> endCoordinate, int numberOfPaths) async {
   Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
