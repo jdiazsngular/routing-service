@@ -32,23 +32,34 @@ class MathUtil {
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
     double unevenness = toNode.altitude! - fromNode.altitude!;
-    
+
     if (fromNode.nodeType == NodeType.lift) {
-      double increaseFactorWhenGoDownByLift = min(0, unevenness).toDouble().abs() * 3;
-      factor = increaseFactorWhenGoDownByLift;
+      factor = _getIncreaseFactorWhenGoDownByLift(unevenness);
     }
 
     if (fromNode.nodeType == NodeType.run) {
-      double increseFactorWhenGoUpByRun = max(0, unevenness) * 3;
-      factor = increseFactorWhenGoUpByRun;
+      factor = _getIncreseFactorWhenGoUpByRun(unevenness);
 
+<<<<<<< HEAD
       factor += getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
+=======
+      factor += _getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
+>>>>>>> develop
     }
 
     return factor;
   }
 
-  static double getFactorWhenRunTypeIsMoreDifficultThanUserLevel(RunType runType, RunType userLevel, double unevenness) {
+  static double _getIncreaseFactorWhenGoDownByLift(double unevenness) {
+    return min(0, unevenness).toDouble().abs() * 3;
+  }
+
+  static double _getIncreseFactorWhenGoUpByRun(double unevenness) {
+    return max(0, unevenness) * 3;
+  }
+
+  static double _getFactorWhenRunTypeIsMoreDifficultThanUserLevel(
+      RunType runType, RunType userLevel, double unevenness) {
     double factor = 0;
     if (runType.index > userLevel.index) {
       factor = unevenness.abs() * 20;
