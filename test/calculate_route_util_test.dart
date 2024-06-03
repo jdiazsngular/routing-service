@@ -1,8 +1,8 @@
 import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
+import 'package:routing_service/model/step.dart';
 import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
-import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:test/test.dart';
 

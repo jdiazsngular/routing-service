@@ -1,7 +1,7 @@
 import 'package:routing_service/enums/run_type_enum.dart';
+import 'package:routing_service/model/step.dart';
 import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
-import 'package:routing_service/service/route_algorithm_service.dart';
 import 'package:test/test.dart';
 
 import 'calculate_route_util_test.dart';

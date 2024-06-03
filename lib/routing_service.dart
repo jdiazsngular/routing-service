@@ -2,6 +2,7 @@ import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
+import 'package:routing_service/model/step.dart';
 import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/service/file_service.dart';
 import 'package:routing_service/service/graph_service.dart';
@@ -55,7 +56,7 @@ Future<List<Step>> calculateLongestRouteSteps(
   Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
   Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
-  return RouteAlgorithmService.findLongestPath(graph, startNode, endNode, 10, userOption);
+  return RouteAlgorithmService.findLongestPath(graph, startNode, endNode, 15, userOption);
 }
 
 Future<List<List<Step>>> calculateAlternateRoute(

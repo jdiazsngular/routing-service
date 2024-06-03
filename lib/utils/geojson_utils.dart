@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:routing_service/service/route_algorithm_service.dart';
+import 'package:routing_service/model/step.dart';
 
 class GeoJsonUtils {
   static const Map<ColorEnum, String> colors = {
@@ -15,11 +15,11 @@ class GeoJsonUtils {
     ColorEnum selectedColor = color ?? ColorEnum.blue;
     var path = steps.map((step) => step.node);
     final coordinates = path.map((node) => [node.longitude, node.latitude, node.altitude]).toList();
-    
+
     final geoJson = {
-        "type": "Feature",
-        "geometry": {"type": "LineString", "coordinates": coordinates},
-        "properties": {"name": "route", "stroke": colors[selectedColor], "stroke-width": 5, "stroke-opacity": 1}
+      "type": "Feature",
+      "geometry": {"type": "LineString", "coordinates": coordinates},
+      "properties": {"name": "route", "stroke": colors[selectedColor], "stroke-width": 5, "stroke-opacity": 1}
     };
 
     return jsonEncode(geoJson);
