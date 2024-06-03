@@ -40,9 +40,11 @@ class GraphService {
       final Node nextNode = _createNode(graph, name, nextCoord, nodeType);
 
       final distance = MathUtil.calculateDistanceByHaversine(currentNode, nextNode);
+      int direction = 1;
+      if (nodeType == NodeType.connection || nodeType == NodeType.unknown) direction = 0;
 
-      final currentToNextWeight = distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption);
-      final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption);
+      final currentToNextWeight = distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption, distance, direction);
+      final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption, distance, -direction);
 
       graph.assignNeighbor(currentNode, nextNode, distance, currentToNextWeight, runType, name);
       graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name);

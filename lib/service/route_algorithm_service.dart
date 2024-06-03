@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/model/step.dart';
@@ -76,37 +75,11 @@ class RouteAlgorithmService {
   }
 
   static List<Step> _findLongestPath(List<List<Step>> paths) {
-    List<List<Step>> correctPaths = paths.where((path) => _isCorrectPath(path)).toList();
-
-    if (correctPaths.isEmpty) {
-      return [];
-    }
-
-    return correctPaths.reduce((longestPath, currentPath) {
+    return paths.reduce((longestPath, currentPath) {
       double longestDistance = longestPath.fold(0.0, (sum, step) => sum + step.distance);
       double currentDistance = currentPath.fold(0.0, (sum, step) => sum + step.distance);
       return currentDistance > longestDistance ? currentPath : longestPath;
     });
-  }
-
-  static bool _isCorrectPath(List<Step> path) {
-    for (int i = 0; i < path.length - 1; i++) {
-      Step currentStep = path[i];
-      Step nextStep = path[i + 1];
-
-      // Subida sin telesilla
-      if (nextStep.node.altitude! > currentStep.node.altitude! &&
-          nextStep.node.nodeType != NodeType.lift &&
-          (nextStep.node.altitude! - currentStep.node.altitude! > 10)) {
-        return false;
-      }
-
-      // Bajada sin run
-      if (nextStep.node.altitude! < currentStep.node.altitude! && nextStep.node.nodeType != NodeType.run) {
-        return false;
-      }
-    }
-    return true;
   }
 
   static void _initializeDistancesAndPath(Graph graph, Map<Node, double> distances, Map<Node, Step?> path) {

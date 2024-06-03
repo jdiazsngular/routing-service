@@ -27,38 +27,35 @@ class MathUtil {
     return _earthRadius * c * 1000;
   }
 
-  static double calculateFactorFor(Node fromNode, Node toNode, RunType runType, UserOption userOption) {
+  static double calculateFactorFor(Node fromNode, Node toNode, RunType runType, UserOption userOption, double distance, int direction) {
     double factor = 0.0;
     if (fromNode.altitude == null || toNode.altitude == null) return factor;
 
-    double unevenness = toNode.altitude! - fromNode.altitude!;
-
     if (fromNode.nodeType == NodeType.lift) {
-      factor = _getIncreaseFactorWhenGoDownByLift(unevenness);
+      factor = _getIncreaseFactorWhenGoBackguardsByLift(distance, direction);
     }
 
     if (fromNode.nodeType == NodeType.run) {
-      factor = _getIncreseFactorWhenGoUpByRun(unevenness);
-
-      factor += _getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, unevenness);
+      factor = _getIncreaseFactorWhenGoBackguardsByRun(distance, direction);
+      factor += _getFactorWhenRunTypeIsMoreDifficultThanUserLevel(runType, userOption.level, distance);
     }
 
     return factor;
   }
 
-  static double _getIncreaseFactorWhenGoDownByLift(double unevenness) {
-    return min(0, unevenness).toDouble().abs() * 3;
+  static double _getIncreaseFactorWhenGoBackguardsByLift(double distance, int direction) {
+    return min(0, distance * direction).toDouble().abs() * 10;
   }
 
-  static double _getIncreseFactorWhenGoUpByRun(double unevenness) {
-    return max(0, unevenness) * 3;
+  static double _getIncreaseFactorWhenGoBackguardsByRun(double distance, int direction) {
+    return min(0, distance * direction).toDouble().abs() * 15;
   }
 
   static double _getFactorWhenRunTypeIsMoreDifficultThanUserLevel(
-      RunType runType, RunType userLevel, double unevenness) {
+      RunType runType, RunType userLevel, double distance) {
     double factor = 0;
     if (runType.index > userLevel.index) {
-      factor = unevenness.abs() * 20;
+      factor = distance * 20;
     }
     return factor;
   }
