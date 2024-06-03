@@ -13,6 +13,11 @@ Future<Graph> calculateGraph(String geoJson, UserOption userOption) async {
   return GraphService.geoJsonToGraph(jsonString, userOption);
 }
 
+Future<Graph> calculateGraphUnidirectional(String geoJson, UserOption userOption) async {
+  String jsonString = await FileService.loadFile(geoJson);
+  return GraphService.geoJsonToGraphUnidirectional(jsonString, userOption);
+}
+
 Future<String> calculateRoute(UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
@@ -48,14 +53,14 @@ Future<List<Step>> calculateRouteSteps(
   return RouteAlgorithmService.findShortestPath(graph, startNode, endNode);
 }
 
-Future<List<Step>> calculateLongestRouteSteps(
+Future<List<Step>> calculateLongestRoute(
     UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
-  Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
+  Graph graph = await calculateGraphUnidirectional('assets/filtered_lifts.geojson', userOption);
 
   Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
   Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
-  return RouteAlgorithmService.findLongestPath(graph, startNode, endNode);
+  return RouteAlgorithmService.findLongestDownhillPath(graph, startNode, endNode);
 }
 
 Future<List<List<Step>>> calculateAlternateRoute(

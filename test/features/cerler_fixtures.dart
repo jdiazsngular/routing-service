@@ -15,4 +15,6 @@ class CerlerFixture {
   static final List<double> fontanalsRunCoordinates = [42.57232560000001, 0.54432, 1882.8];
   static final List<double> pasoLobinoRunCoordinates = [42.554481999999986, 0.5865514999999998, 2183.84];
   static final List<double> muidorsRunCoordinates = [42.56536220000002, 0.5516519000000002, 2246.19];
+  static final List<double> gallineroRunCoordinates = [42.54413690000001, 0.5555992000000002, 2603.3500000000004];
+  static final List<double> bottomRunCoordinates = [42.5620174, 0.5677814000000002, 1900.55];
 }

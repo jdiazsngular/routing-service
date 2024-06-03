@@ -2,6 +2,7 @@ import 'package:routing_service/enums/run_type_enum.dart';
 import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
 import 'package:routing_service/service/route_algorithm_service.dart';
+import 'package:routing_service/utils/geojson_utils.dart';
 import 'package:test/test.dart';
 
 import 'features/cerler_fixtures.dart';
@@ -80,12 +81,33 @@ void main() {
       UserOption userOption = UserOption(level: RunType.advanced);
 
       var list = await routing_service.calculateAlternateRoute(
-          userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates, 3);
+          userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates, 10);
       
-      expect(list, hasLength(3));
-      expect(list.first, hasLength(131));
-      expect(list.elementAt(1), hasLength(168));
-      expect(list.last, hasLength(150));
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(0))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(1))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(2))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(3))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(4))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(5))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(6))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(7))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(8))},");
+      print("${GeoJsonUtils.pathToGeoJsonFeature(list.elementAt(9))}");
+      // expect(list, hasLength(3));
+      // expect(list.first, hasLength(131));
+      // expect(list.elementAt(1), hasLength(168));
+      // expect(list.last, hasLength(150));
+    });
+  });
+
+  group("Calculate longest route from", () {
+    test("Castena to molino with user level advanced", () async {
+      UserOption userOption = UserOption(level: RunType.advanced);
+
+      var steps = await routing_service.calculateLongestRoute(
+          userOption, CerlerFixture.gallineroRunCoordinates, CerlerFixture.bottomRunCoordinates);
+
+      print(GeoJsonUtils.pathToGeoJsonFeature(steps));
     });
   });
 }

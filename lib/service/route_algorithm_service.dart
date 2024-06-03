@@ -51,10 +51,15 @@ class RouteAlgorithmService {
     }
   }
 
+  static void _initializeDistancesToZeroAndPath(Graph graph, Map<Node, double> distances, Map<Node, Step?> path) {
+    for (var node in graph.nodes.values) {
+      distances[node] = 0.0;
+    }
+  }
+
   static List<Step> _constructRoute(Map<Node, Step?> path, Node endNode) {
     final route = <Step>[];
     Step? currentStep = Step(node: endNode, runType: path[endNode]!.runType);
-
     while (currentStep != null) {
       route.add(currentStep);
       currentStep = path[currentStep.node];
@@ -138,7 +143,50 @@ class RouteAlgorithmService {
         (previousNodeType == NodeType.lift && currentNodeType == NodeType.run) ||
         (previousNodeType == NodeType.run && currentNodeType == NodeType.run);
   }
+
+  static List<Step> findLongestDownhillPath(Graph graph, Node startNode, Node endNode) {
+    final weights = <Node, double>{};
+    final path = <Node, Step?>{};
+    final priorityQueue = PriorityQueue<Node>((a, b) => weights[a]!.compareTo(weights[b]!));
+
+    _initializeDistancesToZeroAndPath(graph, weights, path);
+
+    weights[startNode] = 0.0;
+    priorityQueue.add(startNode);
+
+    while (priorityQueue.isNotEmpty) {
+      final currentNode = priorityQueue.removeFirst();
+
+      if (currentNode == endNode) {
+        break;
+      }
+
+      var onlyDownhill = currentNode.neighbors.where((element) {
+        return (element.node.altitude != null &&
+        element.node.nodeType == NodeType.run);
+      });
+      for (var neighbor in onlyDownhill) {
+        final weight = weights[currentNode]! + neighbor.weight;
+
+        if (weight > weights[neighbor.node]!) {
+          weights[neighbor.node] = weight;
+          path[neighbor.node] = Step(node: currentNode, runType: neighbor.runType);
+
+          if (!priorityQueue.contains(neighbor.node)) {
+            priorityQueue.add(neighbor.node);
+          }
+        }
+      }
+    }
+
+    if (weights[endNode] == 0.0) {
+      throw Exception('No route available within the user\'s skill level');
+    }
+
+    return _constructRoute(path, endNode);
+  }
 }
+
 
 class Step {
   Node node;
