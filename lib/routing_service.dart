@@ -55,7 +55,7 @@ Future<List<Step>> calculateLongestRouteSteps(
   Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
   Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
-  return RouteAlgorithmService.findLongestPath(graph, startNode, endNode);
+  return RouteAlgorithmService.findLongestPath(graph, startNode, endNode, 10, userOption);
 }
 
 Future<List<List<Step>>> calculateAlternateRoute(

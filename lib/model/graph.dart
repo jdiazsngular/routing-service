@@ -40,7 +40,7 @@ class Graph {
   }
 
   void penalizeNeightborFor(Node node, Node nextNode, UserOption userOption) {
-    double penalizationFactor = 1.5;
+    double penalizationFactor = 1.25;
     if (node.nodeType == NodeType.run && nextNode.nodeType != NodeType.lift) {
       Node? graphNode = nodes[node.getKey()];
       if (graphNode == null) return;
