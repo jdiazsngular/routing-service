@@ -16,8 +16,9 @@ void main() {
           userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates);
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
-      expect(invalidRunSteps, hasLength(18));
-      expect(steps, hasLength(129));
+
+      expect(invalidRunSteps, hasLength(19));
+      expect(steps, hasLength(132));
       expect(steps, containsCoordinates(CerlerFixture.basibeTopLiftCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.ampriuBottomLiftCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.sarrauTopLiftCoordinates));
@@ -32,7 +33,7 @@ void main() {
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(1));
-      expect(steps, hasLength(148));
+      expect(steps, hasLength(180));
       expect(steps, containsCoordinates(CerlerFixture.basibeNouFontsRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.basibeRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.batisiellesTopLiftCoordinates));
@@ -43,18 +44,10 @@ void main() {
     test('calculateRoute Castanea to molino with user level intermediate', () async {
       UserOption userOption = UserOption(level: RunType.intermediate);
 
-      //List<Step> steps = await routing_service.calculateRouteSteps(
-      //    userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates);
-
-      List<Step> steps = await routing_service.calculateLongestRouteSteps(
+      List<Step> steps = await routing_service.calculateRouteSteps(
           userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates);
 
-      CalculateRouteUtilTest.printGeoJson(steps);
-
-      //CalculateRouteUtilTest.printGeoJson(steps);
-      //CalculateRouteUtilTest.printGeoJson(steps2);
-
-      /* var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
+      var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
       expect(steps, hasLength(128));
       expect(steps, containsCoordinates(CerlerFixture.castanesaBottomLiftCoordinates));
@@ -63,7 +56,7 @@ void main() {
       expect(steps, containsCoordinates(CerlerFixture.batisiellesTopLiftCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.barrancoRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.fontanalsRunCoordinates));
-      expect(steps, containsCoordinates(CerlerFixture.molinoBottomLiftCoordinates));*/
+      expect(steps, containsCoordinates(CerlerFixture.molinoBottomLiftCoordinates));
     });
 
     test('calculateRoute Castanea to molino with user level advanced', () async {
@@ -74,7 +67,7 @@ void main() {
 
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
-      expect(steps, hasLength(131));
+      expect(steps, hasLength(134));
       expect(steps, containsCoordinates(CerlerFixture.basibeNouFontsRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.pasoLobinoRunCoordinates));
       expect(steps, containsCoordinates(CerlerFixture.ampriuBottomLiftCoordinates));
@@ -92,9 +85,24 @@ void main() {
           userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates, 3);
 
       expect(list, hasLength(3));
-      expect(list.first, hasLength(131));
-      expect(list.elementAt(1), hasLength(168));
-      expect(list.last, hasLength(150));
+      expect(list.first, hasLength(134));
+      expect(list.elementAt(1), hasLength(158));
+      expect(list.last, hasLength(162));
+    });
+  });
+
+  group("Calculate longest Route from", () {
+    test("Castena to molino with user level advanced", () async {
+      UserOption userOption = UserOption(level: RunType.advanced);
+
+      List<Step> steps = await routing_service.calculateLongestRouteSteps(
+          userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates);
+      
+      var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
+      expect(invalidRunSteps, hasLength(0));
+      expect(steps, hasLength(180));
+
+      CalculateRouteUtilTest.printGeoJson(steps);
     });
   });
 }

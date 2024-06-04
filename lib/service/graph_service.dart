@@ -45,10 +45,10 @@ class GraphService {
 
       final currentToNextWeight =
           distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption, distance, direction);
-      //final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption, distance, -direction);
+      final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption, distance, -direction);
 
       graph.assignNeighbor(currentNode, nextNode, distance, currentToNextWeight, runType, name);
-      //graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name);
+      graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name);
     }
   }
 
