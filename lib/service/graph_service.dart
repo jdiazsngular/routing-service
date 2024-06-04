@@ -15,13 +15,13 @@ class GraphService {
     final features = geoJson['features'] as List<dynamic>;
 
     for (var feature in features) {
-      _buildNodesAndNeighbor(feature, graph, userOption);
+      _buildNodesAndNeighbor(feature: feature, graph: graph, userOption: userOption);
     }
 
     return graph;
   }
 
-  static void _buildNodesAndNeighbor(dynamic feature, Graph graph, UserOption userOption) {
+  static void _buildNodesAndNeighbor({required dynamic feature, required Graph graph, required UserOption userOption, bool unidirectional = false }) {
     final geometry = feature['geometry'];
     final properties = feature['properties'];
 
@@ -45,9 +45,10 @@ class GraphService {
 
       final currentToNextWeight =
           distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption, distance, direction);
-      final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption, distance, -direction);
-
       graph.assignNeighbor(currentNode, nextNode, distance, currentToNextWeight, runType, name);
+
+      if (unidirectional) continue;
+      final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption, distance, -direction);
       graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name);
     }
   }
