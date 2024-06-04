@@ -101,8 +101,6 @@ void main() {
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
       expect(steps, hasLength(180));
-
-      CalculateRouteUtilTest.printGeoJson(steps);
     });
   });
 }
