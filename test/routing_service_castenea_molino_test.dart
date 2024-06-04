@@ -4,7 +4,6 @@ import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
 import 'package:test/test.dart';
 
-import 'calculate_route_util_test.dart';
 import 'features/cerler_fixtures.dart';
 
 void main() {
