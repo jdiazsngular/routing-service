@@ -97,7 +97,7 @@ void main() {
 
       List<Step> steps = await routing_service.calculateLongestRouteSteps(
           userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates);
-      
+
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
       expect(steps, hasLength(180));
@@ -109,8 +109,8 @@ void main() {
       UserOption userOption = UserOption(level: RunType.advanced);
 
       List<Step> steps = await routing_service.calculateLongestDownhillSteps(
-          userOption, CerlerFixture.molinoBottomLiftCoordinates);
-      
+          userOption, CerlerFixture.castanesaBottomLiftCoordinates, CerlerFixture.molinoBottomLiftCoordinates);
+
       CalculateRouteUtilTest.printGeoJson(steps);
     });
   });

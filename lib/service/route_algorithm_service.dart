@@ -75,6 +75,22 @@ class RouteAlgorithmService {
     return _findLongestPath(kShortestPaths);
   }
 
+  static List<Step> findLongestDownhillPath(Graph graph, Node startNode, Node endNode) {
+    List<Step> result = [];
+
+    var longestDescentPath = _findLongestDownhillPath(graph, endNode);
+    if (longestDescentPath.isEmpty) {
+      return result;
+    }
+
+    var shortestPathToHighestNode = findShortestPath(graph, startNode, longestDescentPath.last.node);
+
+    result.addAll(shortestPathToHighestNode);
+    result.addAll(longestDescentPath.reversed);
+
+    return result;
+  }
+
   static List<Step> _findLongestPath(List<List<Step>> paths) {
     return paths.reduce((longestPath, currentPath) {
       double longestDistance = longestPath.fold(0.0, (sum, step) => sum + step.distance);
@@ -113,7 +129,7 @@ class RouteAlgorithmService {
     return route.reversed.toList();
   }
 
-  static List<Step> findLongestDownhillPath(Graph graph, Node endNode) {
+  static List<Step> _findLongestDownhillPath(Graph graph, Node endNode) {
     final weights = <Node, double>{};
     final path = <Node, Step?>{};
     final priorityQueue = PriorityQueue<Node>((a, b) => weights[a]!.compareTo(weights[b]!));
@@ -134,7 +150,8 @@ class RouteAlgorithmService {
 
         if (weight > weights[neighbor.node]!) {
           weights[neighbor.node] = weight;
-          path[neighbor.node] = Step(node: currentNode, distance: neighbor.distance, weight: neighbor.weight, runType: neighbor.runType);
+          path[neighbor.node] =
+              Step(node: currentNode, distance: neighbor.distance, weight: neighbor.weight, runType: neighbor.runType);
 
           if (!priorityQueue.contains(neighbor.node)) {
             priorityQueue.add(neighbor.node);

@@ -60,12 +60,13 @@ Future<List<Step>> calculateLongestRouteSteps(
 }
 
 Future<List<Step>> calculateLongestDownhillSteps(
-    UserOption userOption, List<double> endCoordinate) async {
+    UserOption userOption, List<double> startCoordinate, List<double> endCoordinate) async {
   Graph graph = await calculateGraph('assets/filtered_lifts.geojson', userOption);
 
+  Node startNode = graph.findClosestNode(startCoordinate[0], startCoordinate[1], startCoordinate[2]);
   Node endNode = graph.findClosestNode(endCoordinate[0], endCoordinate[1], endCoordinate[2]);
 
-  return RouteAlgorithmService.findLongestDownhillPath(graph, endNode);
+  return RouteAlgorithmService.findLongestDownhillPath(graph, startNode, endNode);
 }
 
 Future<List<List<Step>>> calculateAlternateRoute(
