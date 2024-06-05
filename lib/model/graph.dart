@@ -19,8 +19,8 @@ class Graph {
     return nodes[key]!;
   }
 
-  void assignNeighbor(Node node1, Node node2, double distance, double weight, RunType runType, String name) {
-    node1.addNeighbor(node2, distance, weight, runType, name);
+  void assignNeighbor(Node node1, Node node2, double distance, double weight, RunType runType, String name, int direction) {
+    node1.addNeighbor(node2, distance, weight, runType, name, direction);
   }
 
   Node findClosestNode(double lat, double lon, double alt) {

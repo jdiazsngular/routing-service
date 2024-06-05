@@ -21,8 +21,9 @@ class Node {
     return '$latitude,$longitude,${altitude ?? ''}';
   }
 
-  void addNeighbor(Node neighbor, double distance, double weight, RunType runType, String name) {
-    neighbors.add(Neighbor(node: neighbor, distance: distance, weight: weight, runType: runType, name: name));
+  void addNeighbor(Node neighbor, double distance, double weight, RunType runType, String name, int direction) {
+    neighbors.add(Neighbor(
+        node: neighbor, distance: distance, weight: weight, runType: runType, name: name, direction: direction));
   }
 
   @override

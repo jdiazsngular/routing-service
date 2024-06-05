@@ -21,7 +21,7 @@ class GraphService {
     return graph;
   }
 
-  static void _buildNodesAndNeighbor({required dynamic feature, required Graph graph, required UserOption userOption, bool unidirectional = false }) {
+  static void _buildNodesAndNeighbor({required dynamic feature, required Graph graph, required UserOption userOption}) {
     final geometry = feature['geometry'];
     final properties = feature['properties'];
 
@@ -45,11 +45,9 @@ class GraphService {
 
       final currentToNextWeight =
           distance + MathUtil.calculateFactorFor(currentNode, nextNode, runType, userOption, distance, direction);
-      graph.assignNeighbor(currentNode, nextNode, distance, currentToNextWeight, runType, name);
-
-      if (unidirectional) continue;
+      graph.assignNeighbor(currentNode, nextNode, distance, currentToNextWeight, runType, name, direction);
       final nextToCurrentWeight = distance + MathUtil.calculateFactorFor(nextNode, currentNode, runType, userOption, distance, -direction);
-      graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name);
+      graph.assignNeighbor(nextNode, currentNode, distance, nextToCurrentWeight, runType, name, -direction);
     }
   }
 

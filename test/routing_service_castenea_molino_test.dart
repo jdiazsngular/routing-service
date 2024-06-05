@@ -4,6 +4,7 @@ import 'package:routing_service/model/user_option.dart';
 import 'package:routing_service/routing_service.dart' as routing_service;
 import 'package:test/test.dart';
 
+import 'calculate_route_util_test.dart';
 import 'features/cerler_fixtures.dart';
 
 void main() {
@@ -100,6 +101,17 @@ void main() {
       var invalidRunSteps = routing_service.getInvalidRunSteps(steps, userOption.level);
       expect(invalidRunSteps, hasLength(0));
       expect(steps, hasLength(180));
+    });
+  });
+
+  group("Calculate longest downhill Route from", () {
+    test("Castena to molino with user level advanced", () async {
+      UserOption userOption = UserOption(level: RunType.advanced);
+
+      List<Step> steps = await routing_service.calculateLongestDownhillSteps(
+          userOption, CerlerFixture.molinoBottomLiftCoordinates);
+      
+      CalculateRouteUtilTest.printGeoJson(steps);
     });
   });
 }

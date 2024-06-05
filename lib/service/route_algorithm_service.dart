@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:routing_service/enums/node_type_enum.dart';
 import 'package:routing_service/model/graph.dart';
 import 'package:routing_service/model/node.dart';
 import 'package:routing_service/model/step.dart';
@@ -89,6 +90,13 @@ class RouteAlgorithmService {
     }
   }
 
+  static void _initializeDistancesToZeroAndPath(Graph graph, Map<Node, double> distances, Map<Node, Step?> path) {
+    for (var node in graph.nodes.values) {
+      distances[node] = 0.0;
+      path[node] = null;
+    }
+  }
+
   static List<Step> _constructRoute(Map<Node, Step?> path, Node endNode) {
     final route = <Step>[];
     Step? currentStep = Step(
@@ -103,5 +111,42 @@ class RouteAlgorithmService {
     }
 
     return route.reversed.toList();
+  }
+
+  static List<Step> findLongestDownhillPath(Graph graph, Node endNode) {
+    final weights = <Node, double>{};
+    final path = <Node, Step?>{};
+    final priorityQueue = PriorityQueue<Node>((a, b) => weights[a]!.compareTo(weights[b]!));
+
+    _initializeDistancesToZeroAndPath(graph, weights, path);
+
+    weights[endNode] = 0.0;
+    priorityQueue.add(endNode);
+
+    while (priorityQueue.isNotEmpty) {
+      final currentNode = priorityQueue.removeFirst();
+
+      var onlyDownhill = currentNode.neighbors.where((element) {
+        return (element.node.nodeType == NodeType.run && element.direction < 0);
+      });
+      for (var neighbor in onlyDownhill) {
+        final weight = weights[currentNode]! + neighbor.weight;
+
+        if (weight > weights[neighbor.node]!) {
+          weights[neighbor.node] = weight;
+          path[neighbor.node] = Step(node: currentNode, distance: neighbor.distance, weight: neighbor.weight, runType: neighbor.runType);
+
+          if (!priorityQueue.contains(neighbor.node)) {
+            priorityQueue.add(neighbor.node);
+          }
+        }
+      }
+    }
+    var heaviestWeightNode = endNode;
+    weights.forEach((node, weight) {
+      if (weight > weights[heaviestWeightNode]!) heaviestWeightNode = node;
+    });
+
+    return _constructRoute(path, heaviestWeightNode);
   }
 }

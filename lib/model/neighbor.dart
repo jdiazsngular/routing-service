@@ -7,6 +7,7 @@ class Neighbor {
   double weight;
   final RunType runType;
   final String name;
+  final int direction;
 
-  Neighbor({required this.node, required this.distance, required this.weight, required this.runType, required this.name});
+  Neighbor({required this.node, required this.distance, required this.weight, required this.runType, required this.name, required this.direction});
 }
