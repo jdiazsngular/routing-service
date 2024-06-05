@@ -106,9 +106,9 @@ class RouteAlgorithmService {
     }
   }
 
-  static void _initializeDistancesToZeroAndPath(Graph graph, Map<Node, double> distances, Map<Node, Step?> path) {
+  static void _initializeWeightsToZeroAndPath(Graph graph, Map<Node, double> weights, Map<Node, Step?> path) {
     for (var node in graph.nodes.values) {
-      distances[node] = 0.0;
+      weights[node] = 0.0;
       path[node] = null;
     }
   }
@@ -134,7 +134,7 @@ class RouteAlgorithmService {
     final path = <Node, Step?>{};
     final priorityQueue = PriorityQueue<Node>((a, b) => weights[a]!.compareTo(weights[b]!));
 
-    _initializeDistancesToZeroAndPath(graph, weights, path);
+    _initializeWeightsToZeroAndPath(graph, weights, path);
 
     weights[endNode] = 0.0;
     priorityQueue.add(endNode);
